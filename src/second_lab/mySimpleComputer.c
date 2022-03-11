@@ -87,13 +87,19 @@ int sc_regSet (int register_n, int value) {
   if (register_n < NORMAL_VALUE_S || register_n > INVALID_COMMAND) {
     exit_flag = EXIT_FAILURE;
   } else {
-    register_n = value;
+    flag_register = value;
   }
+
+  /*   if (value) {
+    flag_register = flag_register | (1 << (registr));
+  } else {
+    flag_register = flag_register & (~(1 << (registr)));
+  } */ // та же реализация побитовым сдвигом
 
   return exit_flag;
 }
 
-int main() {
+/* int main() {
   char string1[15] = "file1.txt";
   int exit_flag = 0;
 
@@ -116,7 +122,7 @@ int main() {
   sc_memoryLoad(string1);
 
   exit_flag = sc_regSet(-2, 15);
-  printf("%d\n", exit_flag);
+  
 
   for (int i = 0; i < RAM_SIZE; i++) {
     if (i == RAM_SIZE - 1) {
@@ -125,4 +131,4 @@ int main() {
       printf("%d", RAM_GLOBAL[i]);
     }
   }
-}
+} */
