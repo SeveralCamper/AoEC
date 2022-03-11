@@ -87,14 +87,24 @@ int sc_regSet (int register_n, int value) {
   if (register_n < NORMAL_VALUE_S || register_n > INVALID_COMMAND) {
     exit_flag = EXIT_FAILURE;
   } else {
-    flag_register = value;
+    if (value) {
+      flag_register = flag_register | (1 << (register_n));
+    } else {
+      flag_register = flag_register & (~(1 << (register_n)));
+    }
   }
 
-  /*   if (value) {
-    flag_register = flag_register | (1 << (registr));
+  return exit_flag;
+}
+
+int sc_regGet (int register_n, int * value) {
+  int exit_flag = EXIT_SUCCESS;
+
+  if (register_n < NORMAL_VALUE_S || register_n > INVALID_COMMAND) {
+    exit_flag = EXIT_FAILURE;
   } else {
-    flag_register = flag_register & (~(1 << (registr)));
-  } */ // та же реализация побитовым сдвигом
+    *value = (flag_register >> register_n) & 1;
+  }
 
   return exit_flag;
 }

@@ -254,6 +254,57 @@ START_TEST(sc_regSet_exception_test) {
 }
 END_TEST
 
+  // sc_regGet
+
+START_TEST(sc_regGet_test) {
+  char string1[15] = "file1.txt";
+  int exit_flag = 0;
+
+  sc_memoryInit();
+
+  sc_memorySave(string1);
+
+  for (int i = 0; i < RAM_SIZE; i++) {
+    RAM_GLOBAL[i] = 9;
+  }
+
+  sc_memoryLoad(string1);
+
+  exit_flag = sc_regGet(1, &exit_flag);
+
+  ck_assert_int_eq(exit_flag, 0);
+  ck_assert_int_eq(flag_register, 0);
+}
+END_TEST
+
+START_TEST(sc_regGet_exception_test) {
+  char string1[15] = "file1.txt";
+  int exit_flag = 0;
+
+  sc_memoryInit();
+
+  sc_memorySave(string1);
+
+  for (int i = 0; i < RAM_SIZE; i++) {
+    RAM_GLOBAL[i] = 9;
+  }
+
+  flag_register = 4;
+
+  sc_memoryLoad(string1);
+
+  exit_flag = sc_regGet(-1, &exit_flag);
+
+  ck_assert_int_eq(exit_flag, 1);
+  ck_assert_int_eq(flag_register, 4);
+
+  exit_flag = sc_regGet(5, &exit_flag);
+
+  ck_assert_int_eq(exit_flag, 1);
+  ck_assert_int_eq(flag_register, 4);
+}
+END_TEST
+
 int main(void) {
   Suite *s1 = suite_create("MSC_Check");
   SRunner *sr = srunner_create(s1);
@@ -304,6 +355,14 @@ int main(void) {
   TCase *sc_regSet_exception_case = tcase_create("sc_regSet_exception_test");
   suite_add_tcase(s1, sc_regSet_exception_case);
 
+  // sc_regGet
+
+  TCase *sc_regGet_case = tcase_create("sc_regGet_test");
+  suite_add_tcase(s1, sc_regGet_case);
+
+  TCase *sc_regGet_exception_case = tcase_create("sc_regGet_exception_test");
+  suite_add_tcase(s1, sc_regGet_exception_case);
+
 
   // ADD TESTS
 
@@ -335,6 +394,11 @@ int main(void) {
 
   tcase_add_test(sc_regSet_case, sc_regSet_test);
   tcase_add_test(sc_regSet_exception_case, sc_regSet_exception_test);
+
+  // sc_regGet
+
+  tcase_add_test(sc_regGet_case, sc_regGet_test);
+  tcase_add_test(sc_regGet_exception_case, sc_regGet_exception_test);
 
   //  Запустить всё это дело
   srunner_run_all(sr, CK_ENV);
