@@ -3,36 +3,26 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
-#define S21_PI 3.14159265358979323846
+#define RAM_SIZE 100
 
-#define S21_EPS 1e-250
-#define S21_EPSILON 0.0000001
+typedef enum {
+  NORMAL_VALUE = 0,
+  UNVALID_VALUE = 1,
+  MEMORY_ERROR = 2
+} value_type_t;
 
-#define S21_NANF __builtin_nanf("0x7fc00000")
-#define S21_INFL __builtin_infl()
-#define S21_HUGE_VAL __builtin_huge_vall()
 
-long int s21_abs(int x);
-long double s21_fabs(double x);
-long double s21_sqrt(double x);
-long double s21_ceil(double x);
-long double s21_floor(double x);
-long double s21_fmod(double x, double y);
-long double s21_pow(double base, double exp);
+typedef struct {
+  int *RAM_array;
+  value_type_t value_type;
+} RAM_Simple_Computer;
 
-long double s21_row(int free_member, int sign, int step, int start_pow,
-                    double x);
+int RAM_GLOBAL[RAM_SIZE];
 
-long double s21_exp(double x);
-long double s21_sin(double x);
-long double s21_cos(double x);
-long double s21_tan(double x);
+int sc_memoryInit ();
 
-long double s21_log(double x);
-
-long double s21_atan(double x);
-long double s21_asin(double x);
-long double s21_acos(double x);
+int sc_memoryInit_S (RAM_Simple_Computer *RAM);
 
 #endif  //  SRC_S21_MATH_H_
