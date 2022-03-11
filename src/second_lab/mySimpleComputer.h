@@ -22,6 +22,7 @@ typedef struct {
 int RAM_GLOBAL[RAM_SIZE];
 
 int sc_memoryInit ();
+int sc_memorySet (int address, int value);
 
 int sc_memoryInit_S (RAM_Simple_Computer *RAM);
 

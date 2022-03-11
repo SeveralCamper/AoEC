@@ -8,6 +8,17 @@ int sc_memoryInit () {
   return EXIT_SUCCESS;
 }
 
+int sc_memorySet (int address, int value) {
+  int exit_flag = EXIT_SUCCESS;
+  if (0 <= address && address < RAM_SIZE) {
+    RAM_GLOBAL[address] = value;
+  } else {
+    exit_flag = EXIT_FAILURE;
+  }
+
+  return exit_flag;
+}
+
 int sc_memoryInit_S (RAM_Simple_Computer *RAM) {
   int exit_flag = EXIT_SUCCESS;
   RAM->RAM_array = (int*) malloc(RAM_SIZE * sizeof(int));
@@ -16,17 +27,17 @@ int sc_memoryInit_S (RAM_Simple_Computer *RAM) {
     for (int i = 0; i < RAM_SIZE; i++) {
       RAM->RAM_array[i] = 0;
     }
-    RAM->value_type = 0;
+    RAM->value_type = NORMAL_VALUE;
   } else {
     printf("Memory allocation error!");
     exit_flag = EXIT_FAILURE;
-    RAM->value_type = 2;
+    RAM->value_type = MEMORY_ERROR;
   }
 
   return exit_flag;
 }
 
-/*int main() {
+/* int main() {
 
   RAM_Simple_Computer RAM_1;
 
@@ -49,4 +60,15 @@ int sc_memoryInit_S (RAM_Simple_Computer *RAM) {
       printf("%d", RAM_1.RAM_array[i]);
     }
   }
+
+  sc_memorySet(5, 1);
+
+  for (int i = 0; i < RAM_SIZE; i++) {
+    if (i == RAM_SIZE - 1) {
+      printf("%d\n\n", RAM_GLOBAL[i]);
+    } else {
+      printf("%d", RAM_GLOBAL[i]);
+    }
+  }
+
 } */

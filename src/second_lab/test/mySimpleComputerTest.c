@@ -28,6 +28,29 @@ START_TEST(sc_memoryInit_test) {
 }
 END_TEST
 
+START_TEST(sc_memorySet_test) {
+  int success_flag = 1;
+
+  sc_memoryInit();
+
+  sc_memorySet(5, 10);
+
+  if (RAM_GLOBAL[5] != 10) {
+    success_flag = 0;
+  }
+  ck_assert_int_eq(success_flag, 1);
+
+  for (int i = 0; i < RAM_SIZE; i++) {
+    sc_memorySet(i, i + 1);
+    if (RAM_GLOBAL[i] != i + 1) {
+      success_flag = 0;
+    }
+
+    ck_assert_int_eq(success_flag, 1);
+  }
+}
+END_TEST
+
 int main(void) {
   Suite *s1 = suite_create("MSC_Check");
   SRunner *sr = srunner_create(s1);
@@ -41,6 +64,11 @@ int main(void) {
   TCase *sc_memoryInit_case = tcase_create("sc_memoryInit_test");
   suite_add_tcase(s1, sc_memoryInit_case);
 
+  // sc_memorySet
+
+  TCase *sc_memorySet_case = tcase_create("sc_memorySet_test");
+  suite_add_tcase(s1, sc_memorySet_case);
+
 
   // ADD TESTS
 
@@ -48,6 +76,10 @@ int main(void) {
   // sc_memoryInit
 
   tcase_add_test(sc_memoryInit_case, sc_memoryInit_test);
+
+  // sc_memorySet
+
+  tcase_add_test(sc_memorySet_case, sc_memorySet_test);
 
   //  Запустить всё это дело
   srunner_run_all(sr, CK_ENV);
