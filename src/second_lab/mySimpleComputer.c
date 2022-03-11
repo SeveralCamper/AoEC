@@ -16,6 +16,7 @@ int sc_memoryInit_S (RAM_Simple_Computer *RAM) {
     for (int i = 0; i < RAM_SIZE; i++) {
       RAM->RAM_array[i] = 0;
     }
+    RAM->value_type = 0;
   } else {
     printf("Memory allocation error!");
     exit_flag = EXIT_FAILURE;
@@ -25,7 +26,7 @@ int sc_memoryInit_S (RAM_Simple_Computer *RAM) {
   return exit_flag;
 }
 
-int main() {
+/*int main() {
 
   RAM_Simple_Computer RAM_1;
 
@@ -48,4 +49,4 @@ int main() {
       printf("%d", RAM_1.RAM_array[i]);
     }
   }
-}
+} */
