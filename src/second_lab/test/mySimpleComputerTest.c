@@ -51,6 +51,35 @@ START_TEST(sc_memorySet_test) {
 }
 END_TEST
 
+START_TEST(sc_memorySet_exception_test) {
+  int success_flag = 1;
+
+  sc_memoryInit();
+
+  int exeption_exit = sc_memorySet(101, 10);
+
+  for (int i = 0; i < RAM_SIZE; i++) {
+    if (RAM_GLOBAL[i] != 0 || exeption_exit != 1) {
+      success_flag = 0;
+      break;
+    }
+  }
+
+  ck_assert_int_eq(success_flag, 1);
+
+  exeption_exit = sc_memorySet(-2, 0);
+
+  for (int i = 0; i < RAM_SIZE; i++) {
+    if (RAM_GLOBAL[i] != 0 || exeption_exit != 1) {
+      success_flag = 0;
+      break;
+    }
+  }
+
+  ck_assert_int_eq(success_flag, 1);
+}
+END_TEST
+
 int main(void) {
   Suite *s1 = suite_create("MSC_Check");
   SRunner *sr = srunner_create(s1);
@@ -69,6 +98,9 @@ int main(void) {
   TCase *sc_memorySet_case = tcase_create("sc_memorySet_test");
   suite_add_tcase(s1, sc_memorySet_case);
 
+  TCase *sc_memorySet_exception_case = tcase_create("sc_memorySet_exception_test");
+  suite_add_tcase(s1, sc_memorySet_exception_case);
+
 
   // ADD TESTS
 
@@ -80,6 +112,7 @@ int main(void) {
   // sc_memorySet
 
   tcase_add_test(sc_memorySet_case, sc_memorySet_test);
+  tcase_add_test(sc_memorySet_exception_case, sc_memorySet_exception_test);
 
   //  Запустить всё это дело
   srunner_run_all(sr, CK_ENV);
