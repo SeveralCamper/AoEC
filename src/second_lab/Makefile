@@ -62,8 +62,8 @@ clean:
 		rm -rf gcov_report
 		rm -rf mySimpleComputer
 		rm -rf mySimpleComputer.a
-		rm -rf mySimpleComputerTest
 		rm -rf ../../bin/mySimpleComputer
+		rm -rf ../../bin/mySimpleComputerTest
 		rm -rf *.o *.so *.a fizz *.gc* *.info report *.out *.gcda *.so *.gcno *.info
 		rm -rf test/*.o test/*.so test/*.a  test/*.gcda  test/*.so  test/*.gcno  test/*.info
 
