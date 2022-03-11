@@ -16,12 +16,15 @@ typedef enum {
 
 typedef struct {
   int *RAM_array;
+  int flag_register;
   value_type_t value_type;
 } RAM_Simple_Computer;
 
+int flag_register;
 int RAM_GLOBAL[RAM_SIZE];
 
 int sc_memoryInit ();
+int sc_regInit (void);
 int sc_memoryLoad(char *filename);
 int sc_memorySave (char * filename);
 int sc_memorySet (int address, int value);

@@ -192,6 +192,17 @@ START_TEST(sc_memorySave_and_sc_memoryLoad_exception_test) {
 }
 END_TEST
 
+// sc_regInit
+
+START_TEST(sc_regInit_test) {
+  flag_register = 2;
+
+  sc_regInit();
+
+  ck_assert_int_eq(flag_register, 0);
+}
+END_TEST
+
 int main(void) {
   Suite *s1 = suite_create("MSC_Check");
   SRunner *sr = srunner_create(s1);
@@ -229,6 +240,11 @@ int main(void) {
   TCase *sc_memorySave_and_sc_memoryLoad_exception_case = tcase_create("sc_memorySave_and_sc_memoryLoad_exception_test");
   suite_add_tcase(s1, sc_memorySave_and_sc_memoryLoad_exception_case);
 
+  // sc_regInit
+
+  TCase *sc_regInit_case = tcase_create("sc_regInit_test");
+  suite_add_tcase(s1, sc_regInit_case);
+
 
   // ADD TESTS
 
@@ -251,6 +267,10 @@ int main(void) {
 
   tcase_add_test(sc_memorySave_and_sc_memoryLoad_case, sc_memorySave_and_sc_memoryLoad_test);
   tcase_add_test(sc_memorySave_and_sc_memoryLoad_exception_case, sc_memorySave_and_sc_memoryLoad_exception_test);
+
+  // sc_regInit
+
+  tcase_add_test(sc_regInit_case, sc_regInit_test);
 
   //  Запустить всё это дело
   srunner_run_all(sr, CK_ENV);

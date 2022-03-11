@@ -73,6 +73,14 @@ int sc_memoryInit_S (RAM_Simple_Computer *RAM) {
   return exit_flag;
 }
 
+int sc_regInit (void) {
+  int exit_flag = EXIT_SUCCESS;
+
+  flag_register = 0;
+
+  return exit_flag;
+}
+
 /* int main() {
   char string1[15] = "file1.txt";
 
