@@ -63,11 +63,11 @@ int sc_memoryInit_S (RAM_Simple_Computer *RAM) {
     for (int i = 0; i < RAM_SIZE; i++) {
       RAM->RAM_array[i] = 0;
     }
-    RAM->value_type = NORMAL_VALUE;
+    RAM->value_type = NORMAL_VALUE_S;
   } else {
     printf("Memory allocation error!");
     exit_flag = EXIT_FAILURE;
-    RAM->value_type = MEMORY_ERROR;
+    RAM->value_type = MEMORY_ERROR_S;
   }
 
   return exit_flag;
@@ -81,8 +81,21 @@ int sc_regInit (void) {
   return exit_flag;
 }
 
-/* int main() {
+int sc_regSet (int register_n, int value) {
+  int exit_flag = EXIT_SUCCESS;
+  
+  if (register_n < NORMAL_VALUE_S || register_n > INVALID_COMMAND) {
+    exit_flag = EXIT_FAILURE;
+  } else {
+    register_n = value;
+  }
+
+  return exit_flag;
+}
+
+int main() {
   char string1[15] = "file1.txt";
+  int exit_flag = 0;
 
   sc_memoryInit();
 
@@ -102,6 +115,9 @@ int sc_regInit (void) {
 
   sc_memoryLoad(string1);
 
+  exit_flag = sc_regSet(-2, 15);
+  printf("%d\n", exit_flag);
+
   for (int i = 0; i < RAM_SIZE; i++) {
     if (i == RAM_SIZE - 1) {
       printf("%d\n", RAM_GLOBAL[i]);
@@ -109,4 +125,4 @@ int sc_regInit (void) {
       printf("%d", RAM_GLOBAL[i]);
     }
   }
-} */
+}

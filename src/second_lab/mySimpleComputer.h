@@ -7,10 +7,16 @@
 
 #define RAM_SIZE 100
 
+#define  NORMAL_VALUE 0
+#define  OVERFLOW 1
+#define  MEMORY_ERROR 2
+#define  INVALID_COMMAND 3
+
 typedef enum {
-  NORMAL_VALUE = 0,
-  UNVALID_VALUE = 1,
-  MEMORY_ERROR = 2
+  NORMAL_VALUE_S = 0,
+  OVERFLOW_S = 1,
+  MEMORY_ERROR_S = 2,
+  INVALID_COMMAND_S = 3
 } value_type_t;
 
 
@@ -27,6 +33,7 @@ int sc_memoryInit ();
 int sc_regInit (void);
 int sc_memoryLoad(char *filename);
 int sc_memorySave (char * filename);
+int sc_regSet (int register_n, int value);
 int sc_memorySet (int address, int value);
 int sc_memoryGet (int address, int * value);
 
