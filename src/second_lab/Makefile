@@ -59,6 +59,7 @@ test: $(TESTTARGET)
 	./$(TESTTARGET)
 
 clean:	
+		rm -rf *.txt
 		rm -rf gcov_report
 		rm -rf mySimpleComputer
 		rm -rf mySimpleComputer.a

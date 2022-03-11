@@ -32,13 +32,24 @@ int sc_memoryGet (int address, int * value) {
 
 int sc_memorySave(char *filename) {
   int exit_flag = EXIT_SUCCESS;
-  
+
   FILE *outFile;
-  if ((outFile = fopen(filename, "wb")) == NULL) {
+  outFile = fopen(filename, "wb");
+  fwrite(RAM_GLOBAL, sizeof(int), RAM_SIZE, outFile);
+  fclose(outFile);
+
+  return exit_flag;
+}
+
+int sc_memoryLoad(char *filename) {
+  int exit_flag = EXIT_SUCCESS;
+
+  FILE *inFile;
+  if ((inFile = fopen(filename, "rb")) == NULL) {
     exit_flag = EXIT_FAILURE;
   } else {
-    fwrite(RAM_GLOBAL, sizeof(int), RAM_SIZE, outFile);
-    fclose(outFile);
+    fread(RAM_GLOBAL, sizeof(int), RAM_SIZE, inFile);
+    fclose(inFile);
   }
 
   return exit_flag;
@@ -63,34 +74,31 @@ int sc_memoryInit_S (RAM_Simple_Computer *RAM) {
 }
 
 /* int main() {
-  RAM_Simple_Computer RAM_1;
-
-  int value = 2;
+  char string1[15] = "file1.txt";
 
   sc_memoryInit();
 
-  sc_memoryInit_S(&RAM_1);
+  sc_memorySave(string1);
+
+  for (int i = 0; i < RAM_SIZE; i++) {
+    RAM_GLOBAL[i] = 9;
+  }
 
   for (int i = 0; i < RAM_SIZE; i++) {
     if (i == RAM_SIZE - 1) {
-      printf("%d\n\n", RAM_GLOBAL[i]);
+      printf("%d\n", RAM_GLOBAL[i]);
     } else {
       printf("%d", RAM_GLOBAL[i]);
     }
   }
 
-    for (int i = 0; i < RAM_SIZE; i++) {
+  sc_memoryLoad(string1);
+
+  for (int i = 0; i < RAM_SIZE; i++) {
     if (i == RAM_SIZE - 1) {
-      printf("%d\n", RAM_1.RAM_array[i]);
+      printf("%d\n", RAM_GLOBAL[i]);
     } else {
-      printf("%d", RAM_1.RAM_array[i]);
+      printf("%d", RAM_GLOBAL[i]);
     }
   }
-
-  printf("%d", value);
-
-  sc_memoryGet(5, &value);
-
-  printf("%d", value);
-
 } */

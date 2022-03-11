@@ -138,6 +138,60 @@ START_TEST(sc_memoryGet_exception_test) {
 }
 END_TEST
 
+// MSC sc_memorySave and sc_memoryLoad
+
+START_TEST(sc_memorySave_and_sc_memoryLoad_test) {
+  int success_flag = 1;
+  char string1[15] = "file1.txt";
+
+  sc_memoryInit();
+
+  sc_memorySave(string1);
+
+  for (int i = 0; i < RAM_SIZE; i++) {
+    RAM_GLOBAL[i] = 9;
+  }
+
+  sc_memoryLoad(string1);
+
+  for (int i = 0; i < RAM_SIZE; i++) {
+    if (RAM_GLOBAL[i] != 0) {
+      success_flag = 0;
+      break;
+    }
+  }
+
+  ck_assert_int_eq(success_flag, 1);
+}
+END_TEST
+
+START_TEST(sc_memorySave_and_sc_memoryLoad_exception_test) {
+  int success_flag = 1;
+  int exeption_exit = 0;
+  char string1[15] = "file1.txt";
+  char string2[15] = "file2.txt";
+
+  sc_memoryInit();
+
+  sc_memorySave(string1);
+
+  for (int i = 0; i < RAM_SIZE; i++) {
+    RAM_GLOBAL[i] = 9;
+  }
+  
+  exeption_exit = sc_memoryLoad(string2);
+
+  for (int i = 0; i < RAM_SIZE; i++) {
+    if (RAM_GLOBAL[i] != 9 && exeption_exit != 1) {
+      success_flag = 0;
+      break;
+    }
+  }
+
+  ck_assert_int_eq(success_flag, 1);
+}
+END_TEST
+
 int main(void) {
   Suite *s1 = suite_create("MSC_Check");
   SRunner *sr = srunner_create(s1);
@@ -167,6 +221,14 @@ int main(void) {
   TCase *sc_memoryGet_exception_case = tcase_create("sc_memoryGet_exception_test");
   suite_add_tcase(s1, sc_memoryGet_exception_case);
 
+  // sc_memorySave and sc_memoryLoad
+
+  TCase *sc_memorySave_and_sc_memoryLoad_case = tcase_create("sc_memorySave_and_sc_memoryLoad_test");
+  suite_add_tcase(s1, sc_memorySave_and_sc_memoryLoad_case);
+
+  TCase *sc_memorySave_and_sc_memoryLoad_exception_case = tcase_create("sc_memorySave_and_sc_memoryLoad_exception_test");
+  suite_add_tcase(s1, sc_memorySave_and_sc_memoryLoad_exception_case);
+
 
   // ADD TESTS
 
@@ -184,6 +246,11 @@ int main(void) {
 
   tcase_add_test(sc_memoryGet_case, sc_memoryGet_test);
   tcase_add_test(sc_memoryGet_exception_case, sc_memoryGet_exception_test);
+
+  // sc_memorySave and sc_memoryLoad
+
+  tcase_add_test(sc_memorySave_and_sc_memoryLoad_case, sc_memorySave_and_sc_memoryLoad_test);
+  tcase_add_test(sc_memorySave_and_sc_memoryLoad_exception_case, sc_memorySave_and_sc_memoryLoad_exception_test);
 
   //  Запустить всё это дело
   srunner_run_all(sr, CK_ENV);
