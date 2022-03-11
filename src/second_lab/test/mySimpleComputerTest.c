@@ -28,6 +28,8 @@ START_TEST(sc_memoryInit_test) {
 }
 END_TEST
 
+// MSC sc_memorySet
+
 START_TEST(sc_memorySet_test) {
   int success_flag = 1;
 
@@ -80,6 +82,62 @@ START_TEST(sc_memorySet_exception_test) {
 }
 END_TEST
 
+// MSC sc_memoryGet
+
+START_TEST(sc_memoryGet_test) {
+  int success_flag = 1;
+  int exeption_exit = 0;
+
+  sc_memoryInit();
+
+  sc_memoryGet(5, &exeption_exit);
+
+  if (exeption_exit != RAM_GLOBAL[5]) {
+    success_flag = 0;
+  }
+  ck_assert_int_eq(success_flag, 1);
+
+  for (int i = 0; i < RAM_SIZE; i++) {
+    sc_memoryGet(i, &exeption_exit);
+    if (RAM_GLOBAL[i] != exeption_exit) {
+      success_flag = 0;
+    }
+
+    ck_assert_int_eq(success_flag, 1);
+  }
+}
+END_TEST
+
+START_TEST(sc_memoryGet_exception_test) {
+  int success_flag = 1;
+
+  sc_memoryInit();
+
+  int exeption_exit = 5;
+  sc_memoryGet(101, &exeption_exit);
+
+  for (int i = 0; i < RAM_SIZE; i++) {
+    if (RAM_GLOBAL[i] != 0 || exeption_exit != 5) {
+      success_flag = 0;
+      break;
+    }
+  }
+
+  ck_assert_int_eq(success_flag, 1);
+
+  sc_memoryGet(-1, &exeption_exit);
+
+  for (int i = 0; i < RAM_SIZE; i++) {
+    if (RAM_GLOBAL[i] != 0 || exeption_exit != 5) {
+      success_flag = 0;
+      break;
+    }
+  }
+
+  ck_assert_int_eq(success_flag, 1);
+}
+END_TEST
+
 int main(void) {
   Suite *s1 = suite_create("MSC_Check");
   SRunner *sr = srunner_create(s1);
@@ -101,6 +159,14 @@ int main(void) {
   TCase *sc_memorySet_exception_case = tcase_create("sc_memorySet_exception_test");
   suite_add_tcase(s1, sc_memorySet_exception_case);
 
+  // sc_memoryGet
+
+  TCase *sc_memoryGet_case = tcase_create("sc_memoryGet_test");
+  suite_add_tcase(s1, sc_memoryGet_case);
+
+  TCase *sc_memoryGet_exception_case = tcase_create("sc_memoryGet_exception_test");
+  suite_add_tcase(s1, sc_memoryGet_exception_case);
+
 
   // ADD TESTS
 
@@ -113,6 +179,11 @@ int main(void) {
 
   tcase_add_test(sc_memorySet_case, sc_memorySet_test);
   tcase_add_test(sc_memorySet_exception_case, sc_memorySet_exception_test);
+
+  // sc_memoryGet
+
+  tcase_add_test(sc_memoryGet_case, sc_memoryGet_test);
+  tcase_add_test(sc_memoryGet_exception_case, sc_memoryGet_exception_test);
 
   //  Запустить всё это дело
   srunner_run_all(sr, CK_ENV);

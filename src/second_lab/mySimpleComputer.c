@@ -19,8 +19,8 @@ int sc_memorySet (int address, int value) {
   return exit_flag;
 }
 
- int sc_memoryGet (int address, int * value) {
-   int exit_flag = EXIT_SUCCESS;
+int sc_memoryGet (int address, int * value) {
+  int exit_flag = EXIT_SUCCESS;
   if (0 <= address && address < RAM_SIZE) {
     *value = RAM_GLOBAL[address];
   } else {
@@ -28,7 +28,21 @@ int sc_memorySet (int address, int value) {
   }
 
   return exit_flag;  
- }
+}
+
+int sc_memorySave(char *filename) {
+  int exit_flag = EXIT_SUCCESS;
+  
+  FILE *outFile;
+  if ((outFile = fopen(filename, "wb")) == NULL) {
+    exit_flag = EXIT_FAILURE;
+  } else {
+    fwrite(RAM_GLOBAL, sizeof(int), RAM_SIZE, outFile);
+    fclose(outFile);
+  }
+
+  return exit_flag;
+}
 
 int sc_memoryInit_S (RAM_Simple_Computer *RAM) {
   int exit_flag = EXIT_SUCCESS;
@@ -48,7 +62,7 @@ int sc_memoryInit_S (RAM_Simple_Computer *RAM) {
   return exit_flag;
 }
 
-int main() {
+/* int main() {
   RAM_Simple_Computer RAM_1;
 
   int value = 2;
@@ -79,4 +93,4 @@ int main() {
 
   printf("%d", value);
 
-}
+} */
