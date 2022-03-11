@@ -19,6 +19,17 @@ int sc_memorySet (int address, int value) {
   return exit_flag;
 }
 
+ int sc_memoryGet (int address, int * value) {
+   int exit_flag = EXIT_SUCCESS;
+  if (0 <= address && address < RAM_SIZE) {
+    *value = RAM_GLOBAL[address];
+  } else {
+    exit_flag = EXIT_FAILURE;
+  }
+
+  return exit_flag;  
+ }
+
 int sc_memoryInit_S (RAM_Simple_Computer *RAM) {
   int exit_flag = EXIT_SUCCESS;
   RAM->RAM_array = (int*) malloc(RAM_SIZE * sizeof(int));
@@ -37,9 +48,10 @@ int sc_memoryInit_S (RAM_Simple_Computer *RAM) {
   return exit_flag;
 }
 
-/* int main() {
-
+int main() {
   RAM_Simple_Computer RAM_1;
+
+  int value = 2;
 
   sc_memoryInit();
 
@@ -61,14 +73,10 @@ int sc_memoryInit_S (RAM_Simple_Computer *RAM) {
     }
   }
 
-  sc_memorySet(5, 1);
+  printf("%d", value);
 
-  for (int i = 0; i < RAM_SIZE; i++) {
-    if (i == RAM_SIZE - 1) {
-      printf("%d\n\n", RAM_GLOBAL[i]);
-    } else {
-      printf("%d", RAM_GLOBAL[i]);
-    }
-  }
+  sc_memoryGet(5, &value);
 
-} */
+  printf("%d", value);
+
+}
