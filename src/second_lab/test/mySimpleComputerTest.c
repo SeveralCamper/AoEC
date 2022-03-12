@@ -351,6 +351,7 @@ END_TEST
 START_TEST(sc_commandEncode_exception_test) {
   char string1[15] = "file1.txt";
   int exit_flag = 0;
+  int command = 0, operand = 0, value = 0;
 
   sc_memoryInit();
 
@@ -364,15 +365,29 @@ START_TEST(sc_commandEncode_exception_test) {
 
   sc_memoryLoad(string1);
 
-  exit_flag = sc_regGet(-1, &exit_flag);
+  command = READ;
+  operand = -1;
+
+  exit_flag = sc_commandEncode(command, operand, &value);
 
   ck_assert_int_eq(exit_flag, 1);
-  ck_assert_int_eq(flag_register, 4);
+  ck_assert_int_eq(value, -1);
 
-  exit_flag = sc_regGet(5, &exit_flag);
+  command = 12;
+  operand = 127;
+
+  exit_flag = sc_commandEncode(command, operand, &value);
 
   ck_assert_int_eq(exit_flag, 1);
-  ck_assert_int_eq(flag_register, 4);
+  ck_assert_int_eq(value, 1663);
+
+  command = -12;
+  operand = 1;
+
+  exit_flag = sc_commandEncode(command, operand, &value);
+
+  ck_assert_int_eq(exit_flag, 1);
+  ck_assert_int_eq(value, -1535);
 }
 END_TEST
 
@@ -381,6 +396,7 @@ END_TEST
 START_TEST(sc_commandDecode_test) {
   char string1[15] = "file1.txt";
   int exit_flag = 0;
+  int command = 0, operand = 0, value = 0;
 
   sc_memoryInit();
 
@@ -392,16 +408,36 @@ START_TEST(sc_commandDecode_test) {
 
   sc_memoryLoad(string1);
 
-  exit_flag = sc_regGet(1, &exit_flag);
+  command = READ;
+  operand = 20;
 
-  ck_assert_int_eq(exit_flag, 0);
-  ck_assert_int_eq(flag_register, 0);
+  exit_flag = sc_commandDecode(command, &operand, &value);
+
+  ck_assert_int_eq(exit_flag, 1);
+  ck_assert_int_eq(value, 10);
+
+  command = WRITE;
+  operand = 127;
+
+  exit_flag = sc_commandDecode(command, &operand, &value);
+
+  ck_assert_int_eq(exit_flag, 1);
+  ck_assert_int_eq(value, 11);
+
+  command = STORE;
+  operand = 1;
+
+  exit_flag = sc_commandDecode(command, &operand, &value);
+
+  ck_assert_int_eq(exit_flag, 1);
+  ck_assert_int_eq(value, 21);
 }
 END_TEST
 
 START_TEST(sc_commandDecode_exception_test) {
   char string1[15] = "file1.txt";
   int exit_flag = 0;
+  int command = 0, operand = 0, value = 0;
 
   sc_memoryInit();
 
@@ -411,19 +447,31 @@ START_TEST(sc_commandDecode_exception_test) {
     RAM_GLOBAL[i] = 9;
   }
 
-  flag_register = 4;
-
   sc_memoryLoad(string1);
 
-  exit_flag = sc_regGet(-1, &exit_flag);
+  command = READ;
+  operand = -1;
+
+  exit_flag = sc_commandDecode(command, &operand, &value);
 
   ck_assert_int_eq(exit_flag, 1);
-  ck_assert_int_eq(flag_register, 4);
+  ck_assert_int_eq(value, 10);
 
-  exit_flag = sc_regGet(5, &exit_flag);
+  command = WRITE;
+  operand = 128;
+
+  exit_flag = sc_commandDecode(command, &operand, &value);
 
   ck_assert_int_eq(exit_flag, 1);
-  ck_assert_int_eq(flag_register, 4);
+  ck_assert_int_eq(value, 11);
+
+  command = 13;
+  operand = 1;
+
+  exit_flag = sc_commandDecode(command, &operand, &value);
+
+  ck_assert_int_eq(exit_flag, 1);
+  ck_assert_int_eq(value, 13);
 }
 END_TEST
 
