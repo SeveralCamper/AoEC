@@ -310,6 +310,7 @@ END_TEST
 START_TEST(sc_commandEncode_test) {
   char string1[15] = "file1.txt";
   int exit_flag = 0;
+  int command = 0, operand = 0, value = 0;
 
   sc_memoryInit();
 
@@ -321,10 +322,29 @@ START_TEST(sc_commandEncode_test) {
 
   sc_memoryLoad(string1);
 
-  exit_flag = sc_commandEncode();
+  command = READ;
+  operand = 20;
+
+  exit_flag = sc_commandEncode(command, operand, &value);
 
   ck_assert_int_eq(exit_flag, 0);
-  ck_assert_int_eq(flag_register, 0);
+  ck_assert_int_eq(value, 1300);
+
+  command = WRITE;
+  operand = 127;
+
+  exit_flag = sc_commandEncode(command, operand, &value);
+
+  ck_assert_int_eq(exit_flag, 0);
+  ck_assert_int_eq(value, 1535);
+
+  command = STORE;
+  operand = 1;
+
+  exit_flag = sc_commandEncode(command, operand, &value);
+
+  ck_assert_int_eq(exit_flag, 0);
+  ck_assert_int_eq(value, 2689);
 }
 END_TEST
 
