@@ -109,6 +109,45 @@ int sc_regGet (int register_n, int * value) {
   return exit_flag;
 }
 
+int sc_commandEncode(int command, int operand, int *value) {
+  if (!((command >= READ && command <= WRITE) ||
+        (command >= LOAD && command <= STORE) ||
+        (command >= ADD && command <= MUL) ||
+        (command >= JUMP && command <= SUBC_C)))
+    return EXIT_FAILURE;
+  if (!(operand >= 0 && operand <= 127))
+    return EXIT_FAILURE;
+
+  *value = (command << 7) | operand;
+
+  return EXIT_SUCCESS;
+}
+
+int sc_commandDecode(int value, int *command, int *operand) {
+  int _command = value >> 7;
+
+  if (!((_command >= READ && _command <= WRITE) ||
+        (_command >= LOAD && _command <= STORE) ||
+        (_command >= ADD && _command <= MUL) ||
+        (_command >= JUMP && _command <= SUBC_C))) {
+    flag_register = flag_register | (1 << INVALID_COMMAND);
+    return EXIT_FAILURE;
+  }
+
+  int _operand = value & 127;
+
+  if (!(_operand >= 0 && _operand <= 127)) {
+    flag_register = flag_register | (1 << INVALID_COMMAND);
+    return EXIT_FAILURE;
+  }
+
+  *command = _command;
+  *operand = _operand;
+
+  return EXIT_SUCCESS;
+}
+
+
 /* int main() {
   char string1[15] = "file1.txt";
   int exit_flag = 0;
