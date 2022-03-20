@@ -1,5 +1,5 @@
-#ifndef SRC_S21_MATH_H_
-#define SRC_S21_MATH_H_
+#ifndef MY_TERM_H_
+#define MY_TERM_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -87,4 +87,4 @@ int sc_commandDecode(int value, int *command, int *operand);
 
 int sc_memoryInit_S (RAM_Simple_Computer *RAM);
 
-#endif  //  SRC_S21_MATH_H_
+#endif  //  MY_TERM_H_
