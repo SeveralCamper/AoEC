@@ -5,86 +5,68 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define RAM_SIZE 100
+#include "mySimpleComputer.h"
 
-// Flags
-#define  NORMAL_VALUE 0
-#define  OVERFLOW 1
-#define  MEMORY_ERROR 2
-#define  INVALID_COMMAND 3
+/*  2-ое задание
 
-// Commands
-#define READ 10
-#define WRITE 11
+infocmp:
 
-#define LOAD 20
-#define STORE 21
+"\033c"  -  Очищает экран и помещает курсор в левый верхний угол (строка 0, позиция 0) (clear_screen)
 
-#define ADD 30
-#define SUB 31
-#define DIVIDE 32
-#define MUL 33
+"\033[l;cH"  -  Перемещает курсор в строку l и позицию c (cursor_address)
 
-#define JUMP 40
-#define JNEG 41
-#define JZ 42
-#define HALT 43
 
-#define NOT 51
-#define AND 52
-#define OR 53
-#define XOR 54
-#define JNS 55
-#define JC 56
-#define JNC 57
-#define JP 58
-#define JNP 59
-#define CHL 60
-#define SHR 61
-#define RCL 62
-#define RCR 63
-#define NEG 64
-#define ADDC 65
-#define SUBC 66
-#define LOGLC 67
-#define LOGRC 68
-#define RCCL 69
-#define RCCR 70
-#define MOVA 71
-#define MOVR 72
-#define MOVCA 73
-#define MOVCR 74
-#define ADDC_C 75
-#define SUBC_C 76
+Командная строка и внешний вид терминала определяются переменной среды PS1. Согласно странице man Bash, 
+PS1 представляет собой основную строку, которая отображается, когда оболочка готова к чтению команды.
+
+Чтобы стало яснее, давайте выведем текущее содержимое PS1 в нашей системе (в вашем случае результат может выглядеть иначе):
+
+\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$
+
+Фактически, мы можем настроить три аспекта:
+
+Формат текста: 0 - нормальный, 1 - жирный, 2 - тусклый, 3 - курсив, 4 - подчеркнутый
+
+Цвет текста: заданы в enum colors
+
+Фон текста: заданы в enum colors_back
+
+PS1="\e[A;B;Cm[\u@\h \W]$" -  Задание цвета последующих выводимых символов (set_a_background),
+где A, B, C - параметры цвета букв, цвета фона и формата в любом порядке;
+ 
+PS1="\e[A;B;Cm[\u@\h \W]$" -  Определение цвета фона для последующих выводимых символов (set_a_foreground),
+где A, B, C  -  параметры цвета букв, цвета фона и формата в любом порядке;
+
+"\033[?25l"  -   Скрытие курсора (cursor_invisible).
+
+"\033[?25h"  -  Восстановление курсора (cursor_visible).
+
+
+3-ое задание
+
+echo -e "\033c"  -  очищает экран;
+
+echo -e "\033[5;10H \e[31;40;1m$HOSTNAME Misha\e[m"  -  выводит в пятой строке, начиная с 10 символа Ваше имя красными буквами на черном фоне;
+
+echo -e "\033[6;8H \e[32;47;1mIP-014\e[m"  -  в шестой строке, начиная с 8 символа Вашу группу зеленым цветом на белом фоне;
+
+echo -e "\033[10;1H \e[m"  -  перемещает курсор в 10 строку, 1 символ и возвращает настройки цвета в значения «по
+умолчанию».
+
+*/
 
 typedef enum {
-  NORMAL_VALUE_S = 0,
-  OVERFLOW_S = 1,
-  MEMORY_ERROR_S = 2,
-  INVALID_COMMAND_S = 3
-} value_type_t;
+  BLACK = 30, RED, GREEN, YELLOW, BLUE, PURPLE, TURQUOISE, WHITE, GRAY, NOTHING
+} colors_t;
 
+typedef enum {
+  BLACK_B = 40, RED_B, GREEN_B, YELLOW_B, BLUE_B, PURPLE_B, TURQUOISE_B, WHITE_B, GRAY_B, NOTHING_B
+} colors_back_t;
 
-typedef struct {
-  int *RAM_array;
-  int flag_register;
-  value_type_t value_type;
-} RAM_Simple_Computer;
+int mt_clrsrc(void);
+int mt_gotoXY (int, int);
+int mt_setfgcolor (colors_t color);
+int mt_setbgcolor (colors_back_t color_back);
+int mt_getscreensize (int * rows, int * cols);
 
-int flag_register;
-int RAM_GLOBAL[RAM_SIZE];
-
-int sc_memoryInit ();
-int sc_regInit (void);
-int sc_memoryLoad(char *filename);
-int sc_memorySave (char * filename);
-int sc_regSet (int register_n, int value);
-int sc_memorySet (int address, int value);
-int sc_regGet (int register_n, int * value);
-int sc_memoryGet (int address, int * value);
-int sc_commandEncode(int command, int operand, int *value);
-int sc_commandDecode(int value, int *command, int *operand);
-
-int sc_memoryInit_S (RAM_Simple_Computer *RAM);
-
-#endif  //  MY_TERM_H_
+#endif  //  MY_TERM_H_ N
