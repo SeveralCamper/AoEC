@@ -21,10 +21,14 @@ int mt_setbgcolor (colors_back_t color_back) {
 }
 
 int mt_getscreensize (int * rows, int * cols) {
-
+    printf("getsize -s %d %d", *rows, *cols);
+    return NORMAL_VALUE_S;
 }
 
 int main() {
+    int W, H;
+    W = 80;
+    H = 10;
     printf("hehe");
     mt_clrsrc();
     mt_gotoXY(20,10);
@@ -34,6 +38,8 @@ int main() {
     printf("hehe");
     mt_setfgcolor(WHITE_B);
     printf("hehe");
+
+    mt_getscreensize(&W,&H);
 
     return 0;
 }

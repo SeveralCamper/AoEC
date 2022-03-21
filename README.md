@@ -1,4 +1,7 @@
 # Architecture-of-Electronic-Computers
+
+# First Lab
+
 This repository will contain laboratories on the topic of computer architecture
 
 * a. int sc_memoryInit () – инициализирует оперативную память Simple Computer, задавая всем еѐ ячейкам нулевые значения. В качестве «оперативной памяти» используется массив целых чисел, определенный статически в рамках библиотеки. Размер массива равен 100 элементам.
@@ -17,3 +20,15 @@ This repository will contain laboratories on the topic of computer architecture
 ошибкой. В этом случае значение value не изменяется.
 * j. int sc_commandDecode (int value, int * command, int * operand) – декодирует значение как команду Simple Computer. Если декодирование невозможно, то
 устанавливается флаг «ошибочная команда» и функция завершается с ошибкой.
+
+# Second LAb
+
+* int mt_clrscr (void)- производит очистку и перемещение курсора в левый верхний угол экрана;
+* int mt_gotoXY (int, int) - перемещает курсор в указанную позицию. Первый
+параметр номер строки, второй - номер столбца;
+* int mt_getscreensize (int * rows, int * cols) - определяет размер экрана
+терминала (количество строк и столбцов);
+* int mt_setfgcolor (enum colors) - устанавливает цвет последующих выводимых
+символов. В качестве параметра передаѐтся константа из созданного Вами перечислимого типа colors, описывающего цвета терминала;
+* int mt_setbgcolor (enum colors) - устанавливает цвет фона последующих выводимых символов. В качестве параметра передаѐтся константа из созданного Вами
+перечислимого типа colors, описывающего цвета терминала. 
