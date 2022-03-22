@@ -1,10 +1,6 @@
 #ifndef MY_TERM_H_
 #define MY_TERM_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-
 #include "mySimpleComputer.h"
 
 /*  2-ое задание
@@ -14,7 +10,6 @@ infocmp:
 "\033c"  -  Очищает экран и помещает курсор в левый верхний угол (строка 0, позиция 0) (clear_screen)
 
 "\033[l;cH"  -  Перемещает курсор в строку l и позицию c (cursor_address)
-
 
 Командная строка и внешний вид терминала определяются переменной среды PS1. Согласно странице man Bash, 
 PS1 представляет собой основную строку, которая отображается, когда оболочка готова к чтению команды.
@@ -64,9 +59,9 @@ typedef enum {
 } colors_back_t;
 
 int mt_clrsrc(void);
-int mt_gotoXY (int, int);
+int mt_gotoXY (int x, int y);
 int mt_setfgcolor (colors_t color);
 int mt_setbgcolor (colors_back_t color_back);
 int mt_getscreensize (int * rows, int * cols);
 
-#endif  //  MY_TERM_H_ N
+#endif  //  MY_TERM_H_

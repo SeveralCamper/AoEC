@@ -5,8 +5,8 @@ int mt_clrsrc(void) {
     return NORMAL_VALUE_S;
 }
 
-int mt_gotoXY (int line, int column) {
-    printf("\033[%d;%dH", line, column);
+int mt_gotoXY (int x, int y) {
+    printf("\033[%d;%dH", x, y);
     return NORMAL_VALUE_S;
 }
 
@@ -25,7 +25,7 @@ int mt_getscreensize (int * rows, int * cols) {
     return NORMAL_VALUE_S;
 }
 
-int main() {
+/* int main() {
     int W, H;
     W = 80;
     H = 10;
@@ -42,4 +42,4 @@ int main() {
     mt_getscreensize(&W,&H);
 
     return 0;
-}
+} */
