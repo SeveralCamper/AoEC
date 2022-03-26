@@ -41,18 +41,16 @@ int bc_box(int x1, int y1, int x2, int y2) {
   return exit_falg;
 }
 
-void bc_bigcharLayout(int *A, int number)
-{
+void bc_bigcharLayout(int *A, int number) {
   number = number % 16;
-  switch(number)
-  {
+  switch(number) {
     case 0:
-      A[0] = 1010975298;
-      A[1] = 1111638588;
+      A[0] = 4291019715;
+      A[1] = 3284386815;
       break;
     case 1:
-      A[0] = 808464432;
-      A[1] = 808467512;
+      A[0] = 3233857728;
+      A[1] = 3233870048;
       break;
     case 2:
       A[0] = 1006897168;
@@ -115,8 +113,7 @@ void bc_bigcharLayout(int *A, int number)
     }
 }
 
-int bc_printbigchar(int *A, int x, int y, colors_t clolor, colors_back_t color_back)
-{
+int bc_printbigchar(int *A, int x, int y, colors_t clolor, colors_back_t color_back) {
   int exit_flag = EXIT_SUCCESS;
 
   mt_gotoXY(x, y);
@@ -193,12 +190,18 @@ void initialize_management_console(int MEMEORY_ARR[], int *buf_array, int x, int
 
   bc_box(x, y, 60, 80);
 
-  bc_printbigchar(buf_array, 4, 4, WHITE, BLACK);
+  bc_printbigchar(buf_array, 1, 2, WHITE, BLACK);
 }
 
 int main() {
   int *buf_array;
   buf_array = (int*) malloc(2 * sizeof(int));
 
-  initialize_management_console(RAM_GLOBAL, buf_array, 0, 0, 15);
+  bc_bigcharLayout(buf_array, 1);
+  bc_printbigchar(buf_array, 1, 15, WHITE, BLACK);
+
+  // initialize_management_console(RAM_GLOBAL, buf_array, 0, 0, 1);
+
+  bc_bigcharLayout(buf_array, 0);
+  bc_printbigchar(buf_array, 1, 15, WHITE, BLACK);
 }
