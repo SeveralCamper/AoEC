@@ -1,6 +1,12 @@
 #ifndef MY_BIG_CHAR_H_
 #define MY_BIG_CHAR_H_
 
+#include <sys/ioctl.h>
+#include <inttypes.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdio.h>
+
 #include "myTerm.h"
 
 /*  2-ое задание
