@@ -45,7 +45,7 @@ int bc_box(int x1, int y1, int x2, int y2) {
 }
 
 void bc_bigcharLayout(int *A, int number) {
-  number = number % 16;
+  number = number % 18;
   switch(number) {
     case 0:
       A[0] = 4291019715;
@@ -96,21 +96,28 @@ void bc_bigcharLayout(int *A, int number) {
       A[1] = 1069794111;
       break;
     case 12: // C
-      A[0] = 1057948419;
-      A[1] = 50578239;
+      A[0] = 1019413251;
+      A[1] = 50578236;
       break;
     case 13: // D
-      A[0] = 405021752;
-      A[1] = 538976288;
+      A[0] = 1069794243;   // 
+      A[1] = 3284386623;   // 
       break;
     case 14: // E
-      A[0] = 405013508;
-      A[1] = 1009001496;
+      A[0] = 4278387459;   // 11000000110000001100000011111111
+      A[1] = 4278387711;   // 11111111110000001100000011111111
       break;
     case 15: // F
-      A[0] = 67372046;
-      A[1] = 67379349;
+      A[0] = 50529027;     // 11000000110000001100000011000000
+      A[1] = 4278387711;   // 11111111110000001100000011111111
       break;
+    case 16: // +
+      A[0] = 6168;
+      A[1] = 4279769088;
+      break;
+    case 17: // -
+      A[0] = 0;     
+      A[1] = 4278190080;   
     default:
       return;
     }
@@ -205,10 +212,12 @@ int main() {
 
   // initialize_management_console(RAM_GLOBAL, buf_array, 0, 0, 1);
 
-  bc_box(0, 0, 60, 80);
+  bc_box(0, 0, 49, 9);
 
-  bc_bigcharLayout(buf_array, number);
-  bc_printbigchar(buf_array, 1, 2, WHITE, BLACK);
+  for (int i = 0; i < 5; i++) {
+    bc_bigcharLayout(buf_array, number);
+    bc_printbigchar(buf_array, 2, (i * 10) + 2, WHITE, BLACK);
+  }
 
   char key, c;
     while (key != 'Q') {
@@ -220,16 +229,19 @@ int main() {
           mt_clrsrc();
           break;
         } else if (key == 'C') {
-            if (number < 15) {
+            if (number < 17) {
               number++;
             } else {
               number = 0;
             }
             
             mt_clrsrc();
-            bc_box(0, 0, 60, 80);
-            bc_bigcharLayout(buf_array, number);
-            bc_printbigchar(buf_array, 1, 2, WHITE, BLACK);
+            bc_box(0, 0, 49, 9);
+            for (int i = 0; i < 5; i++) {
+              bc_bigcharLayout(buf_array, number);
+              bc_printbigchar(buf_array, 2, (i * 10) + 2, WHITE, BLACK);
+            }
+
         } else if ((key == 'a') || (key == 'A')) {
 
             mt_clrsrc();
