@@ -53,8 +53,8 @@ void bc_bigcharLayout(int *A, int number) {
       A[1] = 3233870048;
       break;
     case 2:
-      A[0] = 1006897168;
-      A[1] = 539239484;
+      A[0] = 4278586392;
+      A[1] = 811647868;
       break;
     case 3:
       A[0] = 1009000496;
@@ -140,6 +140,8 @@ int bc_printbigchar(int *A, int x, int y, colors_t clolor, colors_back_t color_b
   mt_setbgcolor(9);
   mt_setfgcolor(9);
 
+  mt_gotoXY(x + 1, 0);
+
   return exit_flag;
 }
 
@@ -194,14 +196,58 @@ void initialize_management_console(int MEMEORY_ARR[], int *buf_array, int x, int
 }
 
 int main() {
-  int *buf_array;
+  int *buf_array, number = 0;
   buf_array = (int*) malloc(2 * sizeof(int));
-
-  bc_bigcharLayout(buf_array, 1);
-  bc_printbigchar(buf_array, 1, 15, WHITE, BLACK);
 
   // initialize_management_console(RAM_GLOBAL, buf_array, 0, 0, 1);
 
-  bc_bigcharLayout(buf_array, 0);
-  bc_printbigchar(buf_array, 1, 15, WHITE, BLACK);
+  bc_box(0, 0, 60, 80);
+
+  bc_bigcharLayout(buf_array, number);
+  bc_printbigchar(buf_array, 1, 2, WHITE, BLACK);
+
+  char key, c;
+    while (key != 'Q') {
+      mt_gotoXY(61, 0);
+      if ((scanf("%c%c", &key, &c) == 2) && (c == '\n') && ((key == ' ') || (key == 'l') ||
+      (key == 's') || (key == 'r') || (key == 't') || (key == 'i') ||
+      (key == 'U+0071') || (key == 'C') || (key == 'Q'))) {
+        if (key == 'Q') {
+          mt_clrsrc();
+          break;
+        } else if (key == 'C') {
+            if (number < 15) {
+              number++;
+            } else {
+              number = 0;
+            }
+            
+            mt_clrsrc();
+            bc_box(0, 0, 60, 80);
+            bc_bigcharLayout(buf_array, number);
+            bc_printbigchar(buf_array, 1, 2, WHITE, BLACK);
+        } else if ((key == 'a') || (key == 'A')) {
+
+            mt_clrsrc();
+            bc_box(0, 0, 60, 80);
+        } else if ((key == 'm') || (key == 'M')) {
+
+            mt_clrsrc();
+            bc_box(0, 0, 60, 80);
+        } else if ((key == 'k') || (key == 'K')) {
+
+            mt_clrsrc();
+            bc_box(0, 0, 60, 80);
+        } else if (key == ' ') {
+            mt_clrsrc();
+            bc_box(0, 0, 60, 80);
+            }
+      } else if (scanf("%c%c", &key, &c) == EOF) {
+          break;
+          } else {
+          mt_clrsrc();
+          bc_box(0, 0, 60, 80);
+          fflush(NULL);
+      }
+  }
 }

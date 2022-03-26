@@ -1,7 +1,7 @@
 #include "myTerm.h"
 
 int mt_clrsrc(void) {
-    printf("\033c");
+    printf("\33c\e[3J");
 
     return EXIT_SUCCESS;
 }
