@@ -1,7 +1,8 @@
 CC = gcc -std=c11
 CFLAGS = -Wall -Werror -Wextra
 LIBS = -lcheck -lsubunit -lrt -lpthread -lm
-TESTTARGET = mySimpleComputerTest
+TARGET = ../../bin/mySimpleComputer
+TESTTARGET = ../../bin/mySimpleComputerTest
 OS := $(shell uname -s)
 
 ifeq ($(OS), Linux)
@@ -31,6 +32,9 @@ mySimpleComputer.a: mySimpleComputer.o
 	ranlib $@
 	cp $@ lib$@
 
+run: $(TARGET)
+	../.././bin/mySimpleComputer
+
 gcov_report: clean test/mySimpleComputerTest.c mySimpleComputer.c
 	-mkdir report
 	$(CC) $(GCOV) test/mySimpleComputerTest.c mySimpleComputer.c $(CFLAGS) $(ADD_LIB) $(LIBS) -lcheck
@@ -55,9 +59,12 @@ test: $(TESTTARGET)
 	./$(TESTTARGET)
 
 clean:	
-		rm -rf mySimpleComputer.a
+		rm -rf *.txt
 		rm -rf gcov_report
 		rm -rf mySimpleComputer
+		rm -rf mySimpleComputer.a
+		rm -rf ../../bin/mySimpleComputer
+		rm -rf ../../bin/mySimpleComputerTest
 		rm -rf *.o *.so *.a fizz *.gc* *.info report *.out *.gcda *.so *.gcno *.info
 		rm -rf test/*.o test/*.so test/*.a  test/*.gcda  test/*.so  test/*.gcno  test/*.info
 
