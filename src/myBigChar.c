@@ -212,7 +212,7 @@ void parse_el(int element) {
   printf("%c%d%d%d%d ", sign,num[0],num[1],num[2],num[3]);
 }
 
-void initialize_management_console(int *buf_array, int number) {
+void initialize_management_console(int *buf_array, int number, int accumulator, int instruction_counter) {
   int str_pos = 0;
   
   mt_clrsrc();
@@ -239,9 +239,13 @@ void initialize_management_console(int *buf_array, int number) {
   bc_box(64, 2, 93, 3);
   mt_gotoXY(2, 72);
   printf(" Accumulator ");
+  mt_gotoXY(3, 76);
+  parse_el(accumulator);
   bc_box(64, 5, 93, 6);
   mt_gotoXY(5, 69);
   printf(" InstructionCounter ");
+  mt_gotoXY(6, 76);
+  parse_el(instruction_counter);
   bc_box(64, 8, 93, 9);
   mt_gotoXY(8, 73);
   printf(" Operation ");
@@ -259,10 +263,10 @@ void initialize_management_console(int *buf_array, int number) {
 }
 
 int main() {
-  int *buf_array, number = 0, accumulator, instruction_counter;
+  int *buf_array, number = 0, accumulator = 0, instruction_counter = 0;
   buf_array = (int*) malloc(2 * sizeof(int));
 
-  initialize_management_console(buf_array, number);
+  initialize_management_console(buf_array, number, accumulator, instruction_counter);
 
   char key, c;
     while (key != 'Q') {
@@ -279,7 +283,7 @@ int main() {
               number = 0;
             }
 
-            initialize_management_console(buf_array, number);
+            initialize_management_console(buf_array, number, accumulator, instruction_counter);
 
         } else if ((key == 'a') || (key == 'A')) {
 
