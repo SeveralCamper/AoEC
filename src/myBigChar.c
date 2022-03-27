@@ -278,9 +278,13 @@ void initialize_management_console(int *buf_array, int number, int accumulator, 
 
     for (int i = 0; i < 5; i++) {
       if (i == 0) {
+        mt_gotoXY(30, 5);
+        printf("%d", sign);
         bc_bigcharLayout(buf_array, sign);
         bc_printbigchar(buf_array, 15, (i * 10) + 2, WHITE, BLACK);
       } else {
+        mt_gotoXY(30, 5);
+        printf("%d", num[i - 1]);
         bc_bigcharLayout(buf_array, num[i]);
         bc_printbigchar(buf_array, 15, (i * 10) + 2, WHITE, BLACK);
       }
