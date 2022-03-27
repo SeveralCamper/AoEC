@@ -212,7 +212,26 @@ void parse_el(int element) {
   printf("%c%d%d%d%d ", sign,num[0],num[1],num[2],num[3]);
 }
 
-void initialize_management_console(int *buf_array, int number, int accumulator, int instruction_counter) {
+void print_keys() {
+  mt_gotoXY(15, 53);
+  printf("l - load     C - show 3-rd lab");
+  mt_gotoXY(16, 53);
+  printf("s - save     I - go to memory interface");
+  mt_gotoXY(17, 53);
+  printf("r - run      Q - quit");
+  mt_gotoXY(18, 53);
+  printf("t - step");
+  mt_gotoXY(19, 53);
+  printf("i - reset");
+  mt_gotoXY(20, 53);
+  printf("F5 - accumulator");
+  mt_gotoXY(21, 53);
+  printf("F6 - instruction counter");
+  mt_gotoXY(12, 75);
+  printf("O E V M");
+}
+
+void initialize_management_console(int *buf_array, int number, int accumulator, int instruction_counter, int lab) {
   int str_pos = 0;
   
   mt_clrsrc();
@@ -232,9 +251,40 @@ void initialize_management_console(int *buf_array, int number, int accumulator, 
   }
 
   bc_box(1, 14, 50, 22);
-  for (int i = 0; i < 5; i++) {
-    bc_bigcharLayout(buf_array, number);
-    bc_printbigchar(buf_array, 15, (i * 10) + 2, WHITE, BLACK);
+
+  if (lab) {
+    for (int i = 0; i < 5; i++) {
+      bc_bigcharLayout(buf_array, number);
+      bc_printbigchar(buf_array, 15, (i * 10) + 2, WHITE, BLACK);
+    }
+  } else {
+    int num[4] = {0, 0, 0, 0}; 
+    int count = 3, sign = 16;
+    if (number < 0) {
+      sign = 17;
+      number *= -1;
+    } else if (number == 0) {
+
+    } else {
+      while (number > 0) {
+        num[count] = number % 10;
+        number = number / 10;
+        count--;
+      }
+    }
+
+    buf_array[0] = 0;
+    buf_array[1] = 0;
+
+    for (int i = 0; i < 5; i++) {
+      if (i == 0) {
+        bc_bigcharLayout(buf_array, sign);
+        bc_printbigchar(buf_array, 15, (i * 10) + 2, WHITE, BLACK);
+      } else {
+        bc_bigcharLayout(buf_array, num[i]);
+        bc_printbigchar(buf_array, 15, (i * 10) + 2, WHITE, BLACK);
+      }
+    }
   }
   bc_box(64, 2, 93, 3);
   mt_gotoXY(2, 72);
@@ -256,6 +306,7 @@ void initialize_management_console(int *buf_array, int number, int accumulator, 
   bc_box(51, 14, 93, 22);
   mt_gotoXY(14, 69);
   printf(" Keys ");
+  print_keys();
 
   mt_gotoXY(24, 0);
   printf("Input\\Output:");
@@ -266,13 +317,13 @@ int main() {
   int *buf_array, number = 0, accumulator = 0, instruction_counter = 0;
   buf_array = (int*) malloc(2 * sizeof(int));
 
-  initialize_management_console(buf_array, number, accumulator, instruction_counter);
+  initialize_management_console(buf_array, number, accumulator, instruction_counter, 1);
 
   char key, c;
     while (key != 'Q') {
       if ((scanf("%c%c", &key, &c) == 2) && (c == '\n') && ((key == ' ') || (key == 'l') ||
       (key == 's') || (key == 'r') || (key == 't') || (key == 'i') ||
-      (key == 'U+0071') || (key == 'C') || (key == 'Q'))) {
+      (key == 'U+0071') || (key == 'C') || (key == 'Q') || (key == 'I'))) {
         if (key == 'Q') {
           mt_clrsrc();
           break;
@@ -283,12 +334,12 @@ int main() {
               number = 0;
             }
 
-            initialize_management_console(buf_array, number, accumulator, instruction_counter);
+            initialize_management_console(buf_array, number, accumulator, instruction_counter, 1);
 
-        } else if ((key == 'a') || (key == 'A')) {
+        } else if ((key == 'I')) {
 
             mt_clrsrc();
-            bc_box(0, 0, 60, 80);
+            initialize_management_console(buf_array, RAM_GLOBAL[0], accumulator, instruction_counter, 0);
         } else if ((key == 'm') || (key == 'M')) {
 
             mt_clrsrc();
