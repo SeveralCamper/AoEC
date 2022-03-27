@@ -314,14 +314,14 @@ void initialize_management_console(int *buf_array, int number, int accumulator, 
 }
 
 int main() {
-  int *buf_array, number = 0, accumulator = 0, instruction_counter = 0;
+  int *buf_array, number = 0, accumulator = RAM_GLOBAL[0], instruction_counter = 0;
   buf_array = (int*) malloc(2 * sizeof(int));
 
   initialize_management_console(buf_array, number, accumulator, instruction_counter, 1);
 
   char key, c;
     while (key != 'Q') {
-      if ((scanf("%c%c", &key, &c) == 2) && (c == '\n') && ((key == ' ') || (key == 'l') ||
+      if ((scanf("%c%c", &key, &c) == 2) && (c == '\n') && ((key == 'l') ||
       (key == 's') || (key == 'r') || (key == 't') || (key == 'i') ||
       (key == 'U+0071') || (key == 'C') || (key == 'Q') || (key == 'I'))) {
         if (key == 'Q') {
@@ -339,11 +339,15 @@ int main() {
         } else if ((key == 'I')) {
 
             mt_clrsrc();
-            initialize_management_console(buf_array, RAM_GLOBAL[0], accumulator, instruction_counter, 0);
-        } else if ((key == 'm') || (key == 'M')) {
+            initialize_management_console(buf_array, accumulator, accumulator, instruction_counter, 0);
+
+        } else if ((key == 'r')) {
 
             mt_clrsrc();
-            bc_box(0, 0, 60, 80);
+            for (int i = 0; i < 100; i++) {
+              RAM_GLOBAL[i] = 0;
+            }
+            initialize_management_console(buf_array, accumulator, accumulator, instruction_counter, 0);
         } else if ((key == 'k') || (key == 'K')) {
 
             mt_clrsrc();
