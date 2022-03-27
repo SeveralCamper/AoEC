@@ -216,6 +216,8 @@ void initialize_management_console(int *buf_array, int number) {
   int str_pos = 0;
   
   mt_clrsrc();
+  mt_gotoXY(1, 37);
+  printf(" MY SIMPLE COMPUTER ");
 
   bc_box(1, 2, 62, 12);
   mt_gotoXY(2, 26);
@@ -235,18 +237,21 @@ void initialize_management_console(int *buf_array, int number) {
     bc_printbigchar(buf_array, 15, (i * 10) + 2, WHITE, BLACK);
   }
   bc_box(64, 2, 93, 3);
-  mt_gotoXY(2, 76);
+  mt_gotoXY(2, 72);
   printf(" Accumulator ");
   bc_box(64, 5, 93, 6);
+  mt_gotoXY(5, 69);
+  printf(" InstructionCounter ");
   bc_box(64, 8, 93, 9);
+  mt_gotoXY(8, 73);
+  printf(" Operation ");
   bc_box(64, 11, 93, 12);
+  mt_gotoXY(11, 75);
+  printf(" Flags ");
 
   bc_box(51, 14, 93, 22);
-
-  for (int i = 0; i < 4; i++) {
-    mt_gotoXY(i * 3 + 4, 94);
-    printf(" ");
-  }
+  mt_gotoXY(14, 69);
+  printf(" Keys ");
 
   mt_gotoXY(24, 0);
   printf("Input\\Output:");
