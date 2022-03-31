@@ -195,7 +195,7 @@ int bc_bigcharread(int fd, int * big, int need_count, int * count) {
   return exit_flag;
 }
 
-void parse_el(int element) {
+void parse_el(int element, int current, int accum) {
  char sign = '+';
   int num[4] = {0, 0, 0, 0}; 
   int count = 3;
@@ -209,7 +209,11 @@ void parse_el(int element) {
     count--;
   }
 
-  printf("%c%d%d%d%d ", sign,num[0],num[1],num[2],num[3]);
+  if (current == accum) {
+    printf("\e[31;40;1m%c%d%d%d%d\e[m ", sign,num[0],num[1],num[2],num[3]);
+  } else {
+    printf("%c%d%d%d%d ", sign,num[0],num[1],num[2],num[3]);
+  }
 }
 
 void print_keys() {
@@ -247,7 +251,7 @@ void initialize_management_console(int *buf_array, int number, int accumulator, 
       mt_gotoXY(str_pos + 3, 2);
       str_pos++;
     }
-    parse_el(RAM_GLOBAL[i]);
+    parse_el(RAM_GLOBAL[i], i, instruction_counter);
   }
 
   bc_box(1, 14, 50, 22);
@@ -291,16 +295,17 @@ void initialize_management_console(int *buf_array, int number, int accumulator, 
       }
     }
   }
+
   bc_box(64, 2, 93, 3);
   mt_gotoXY(2, 72);
   printf(" Accumulator ");
   mt_gotoXY(3, 76);
-  parse_el(accumulator);
+  parse_el(accumulator, -2, -1);
   bc_box(64, 5, 93, 6);
   mt_gotoXY(5, 69);
   printf(" InstructionCounter ");
   mt_gotoXY(6, 76);
-  parse_el(instruction_counter);
+  parse_el(instruction_counter, -2, -1);
   bc_box(64, 8, 93, 9);
   mt_gotoXY(8, 73);
   printf(" Operation ");
@@ -347,6 +352,7 @@ int main() {
           mt_clrsrc();
           break;
         } else if ((key == 'I')) {
+            accumulator = 0;
 
             mt_clrsrc();
             initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
@@ -368,6 +374,7 @@ int main() {
 
           
             global_iter += 1;
+            instruction_counter += 1;
             accumulator = RAM_GLOBAL[global_iter];
             initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
           
