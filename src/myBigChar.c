@@ -360,7 +360,6 @@ int main() {
             }
 
             initialize_management_console(buf_array, number, accumulator, instruction_counter, 1);
-
         } else if (key == 'Q') {
           mt_clrsrc();
           break;
@@ -369,7 +368,6 @@ int main() {
 
             mt_clrsrc();
             initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
-
         } else if ((key == 'i')) {
             global_iter = 0;
             accumulator = 0;
@@ -380,7 +378,6 @@ int main() {
               RAM_GLOBAL[i] = 0;
             }
             initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
-
         } else if (key == 't') {
           
             mt_clrsrc();
@@ -389,7 +386,6 @@ int main() {
             instruction_counter += 1;
             accumulator = RAM_GLOBAL[global_iter];
             initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
-            
         } else if (key == 'r') {
             mt_clrsrc();
         
@@ -397,12 +393,59 @@ int main() {
             instruction_counter += 1;
             accumulator = RAM_GLOBAL[global_iter];
             initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+        } else if (key == 'A') {
+            mt_clrsrc();
+
+            if ((global_iter % 10 - 1) != -1 ) {
+              global_iter -= 1;
+              instruction_counter -= 1;
+              accumulator = RAM_GLOBAL[global_iter];
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+            } else {
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+            }
+        } else if (key == 'W') {
+            mt_clrsrc();
+
+            if ((global_iter - 10) >= 0) {
+            global_iter -= 10;
+            instruction_counter -= 10;
+            accumulator = RAM_GLOBAL[global_iter];
+            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+            } else {
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+            }
+        } else if (key == 'S') {
+            mt_clrsrc();
+            
+            if ((global_iter + 10) <= 100) {
+            global_iter += 10;
+            instruction_counter += 10;
+            accumulator = RAM_GLOBAL[global_iter];
+            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+            } else {
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+            }
+        } else if (key == 'D') {
+            mt_clrsrc();
+
+            if ((global_iter % 10 + 1) != 10) {
+              global_iter += 1;
+              instruction_counter += 1;
+              accumulator = RAM_GLOBAL[global_iter];
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+            } else {
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+            }
         }
       } else if (scanf("%c%c", &key, &c) == EOF) {
           break;
-          } else {
+          } else { 
           mt_clrsrc();
           initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
-      }
+          key = 0;
+          c = 0;
+          fflush(NULL);
+      
   }
 }
