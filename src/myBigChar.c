@@ -263,6 +263,11 @@ void initialize_management_console(int *buf_array, int number, int accumulator, 
     if (number < 0) {
       sign = 17;
       number *= -1;
+      while (number > 0) {
+        num[count] = number % 10;
+        number = number / 10;
+        count--;
+      }
     } else if (number == 0) {
 
     } else {
@@ -314,6 +319,7 @@ void initialize_management_console(int *buf_array, int number, int accumulator, 
 }
 
 int main() {
+  char string1[15] = "file1.txt";
   int *buf_array, number = 0, accumulator = RAM_GLOBAL[0], instruction_counter = 0, global_iter = 0;
   buf_array = (int*) malloc(2 * sizeof(int));
 
@@ -323,11 +329,11 @@ int main() {
     while (key != 'Q') {
       if ((scanf("%c%c", &key, &c) == 2) && (c == '\n') && ((key == 'l') ||
       (key == 's') || (key == 'r') || (key == 't') || (key == 'i') ||
-      (key == 'U+0071') || (key == 'C') || (key == 'Q') || (key == 'I') ||
-      (key == ' '))) {
-        if (key == 'Q') {
-          mt_clrsrc();
-          break;
+      (key == 'C') || (key == 'Q') || (key == 'I') || (key == ' '))) {
+        if (key == 'l') {
+          sc_memoryLoad(string1);
+        } else if (key == 's') {
+          sc_memorySave(string1);
         } else if (key == 'C') {
             if (number < 17) {
               number++;
@@ -337,6 +343,9 @@ int main() {
 
             initialize_management_console(buf_array, number, accumulator, instruction_counter, 1);
 
+        } else if (key == 'Q') {
+          mt_clrsrc();
+          break;
         } else if ((key == 'I')) {
 
             mt_clrsrc();
@@ -350,32 +359,24 @@ int main() {
             }
             initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
 
-        } else if ((key == 'l')) {
-
-            mt_clrsrc();
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
-
-        } else if (key == 's') {
-
-            mt_clrsrc();
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
-
-        } else if (key == ' ') {
+        } else if (key == 'r') {
           
           mt_clrsrc();
+          
+          RAM_GLOBAL[2] = 5;
+          RAM_GLOBAL[6] = -23;
 
-          for (int i = 0; i < RAM_SIZE; i++) {
+          
             global_iter += 1;
             accumulator = RAM_GLOBAL[global_iter];
             initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
-          }
+          
         }
       } else if (scanf("%c%c", &key, &c) == EOF) {
           break;
           } else {
           mt_clrsrc();
           initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
-          fflush(NULL);
       }
   }
 }
