@@ -342,6 +342,10 @@ int main() {
 
   initialize_management_console(buf_array, number, accumulator, instruction_counter, 1);
 
+  for (int i = 0; i < RAM_SIZE; i++) {
+    RAM_GLOBAL[i] = i + 1;
+  }
+
   char key, c;
     while (key != 'Q') {
       if ((scanf("%c%c", &key, &c) == 2) && (c == '\n') && ((key == 'l') ||
@@ -364,6 +368,11 @@ int main() {
           mt_clrsrc();
           break;
         } else if ((key == 'I')) {
+
+            for (int i = RAM_SIZE; i > 0; i--) {
+              RAM_GLOBAL[i] = i - 100;
+            }
+
             accumulator = 0;
 
             mt_clrsrc();
@@ -446,6 +455,6 @@ int main() {
           key = 0;
           c = 0;
           fflush(NULL);
-      
+      }
   }
 }
