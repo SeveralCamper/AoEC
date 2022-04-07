@@ -4,8 +4,11 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <signal.h>
+#include <sys/time.h>
 
 #include "myTerm.h"
+
+struct itimerval nval, oval;
 
 /*  2-ое задание
 
@@ -50,8 +53,8 @@ int bc_setbigcharpos(int *big, int x, int y, int value);
 int bc_getbigcharpos(int *big, int x, int y, int *value);
 int bc_bigcharread(int fd, int * big, int need_count, int *count);
 int bc_printbigchar(int* p, int x, int y, colors_t clolor, colors_back_t clolor_back);
-void initialize_management_console(int *buf_array, int number, int accumulator, int instruction_counter, int lab);
 
+void initialize_management_console(int *buf_array, int number, int accumulator, int instruction_counter, int lab, char flag);
 void bc_bigcharLayout(int*, int);
 
 #endif  //  MY_BIG_CHAR_H_

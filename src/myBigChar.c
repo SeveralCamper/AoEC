@@ -1,5 +1,9 @@
 #include "myBigChar.h"
 
+void signalhandler(int signo) {
+  printf("");
+}
+
 int bc_printA (char * str) {
   int exit_flag = EXIT_SUCCESS;
 
@@ -237,12 +241,13 @@ void print_keys() {
 
 void print_instruction_counter(int instr_count) {
   int i_el = 0, j_el = 0;
-  i_el = instr_count % 10;
-  instr_count;
+  i_el = instr_count / 10;
+  j_el = instr_count % 10;
 
+  printf("0%d:0%d", i_el, j_el);
 }
 
-void initialize_management_console(int *buf_array, int number, int accumulator, int instruction_counter, int lab) {
+void initialize_management_console(int *buf_array, int number, int accumulator, int instruction_counter, int lab, char flag) {
   int str_pos = 0;
   
   mt_clrsrc();
@@ -318,6 +323,8 @@ void initialize_management_console(int *buf_array, int number, int accumulator, 
   bc_box(64, 8, 93, 9);
   mt_gotoXY(8, 73);
   printf(" Operation ");
+  mt_gotoXY(9,78);
+  printf("%c", flag);
   bc_box(64, 11, 93, 12);
   mt_gotoXY(11, 75);
   printf(" Flags ");
@@ -337,10 +344,7 @@ int main() {
   int *buf_array, number = 0, accumulator = RAM_GLOBAL[0], instruction_counter = 0, global_iter = 0;
   buf_array = (int*) malloc(2 * sizeof(int));
 
-  RAM_GLOBAL[2] = 5;
-  RAM_GLOBAL[6] = -23;
-
-  initialize_management_console(buf_array, number, accumulator, instruction_counter, 1);
+  initialize_management_console(buf_array, number, accumulator, instruction_counter, 1, '0');
 
   for (int i = 0; i < RAM_SIZE; i++) {
     RAM_GLOBAL[i] = i + 1;
@@ -363,7 +367,7 @@ int main() {
               number = 0;
             }
 
-            initialize_management_console(buf_array, number, accumulator, instruction_counter, 1);
+            initialize_management_console(buf_array, number, accumulator, instruction_counter, 1, key);
         } else if (key == 'Q') {
           mt_clrsrc();
           break;
@@ -376,7 +380,7 @@ int main() {
             accumulator = 0;
 
             mt_clrsrc();
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
         } else if ((key == 'i')) {
             global_iter = 0;
             accumulator = 0;
@@ -386,7 +390,7 @@ int main() {
             for (int i = 0; i < 100; i++) {
               RAM_GLOBAL[i] = 0;
             }
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
         } else if (key == 't') {
           
             mt_clrsrc();
@@ -394,14 +398,27 @@ int main() {
             global_iter += 1;
             instruction_counter += 1;
             accumulator = RAM_GLOBAL[global_iter];
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
-        } else if (key == 'r') {
+            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
+        } else if (key == 'r') { // SIGNALS
             mt_clrsrc();
+
+            signal(SIGALRM, signalhandler);
+
+            nval.it_interval.tv_sec = 2;
+            nval.it_interval.tv_usec = 500;
+            nval.it_value.tv_sec = 1;
+            nval.it_value.tv_usec = 0;
+
+            setitimer(ITIMER_REAL, &nval, &oval);
+
+            for (int i = 0; i < 100; i++) {
+              global_iter += 1;
+              instruction_counter += 1;
+              accumulator = RAM_GLOBAL[global_iter];
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
+              pause();
+            }
         
-            global_iter += 1;
-            instruction_counter += 1;
-            accumulator = RAM_GLOBAL[global_iter];
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
         } else if (key == 'A') {
             mt_clrsrc();
 
@@ -409,9 +426,9 @@ int main() {
               global_iter -= 1;
               instruction_counter -= 1;
               accumulator = RAM_GLOBAL[global_iter];
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
             } else {
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
             }
         } else if (key == 'W') {
             mt_clrsrc();
@@ -420,9 +437,9 @@ int main() {
             global_iter -= 10;
             instruction_counter -= 10;
             accumulator = RAM_GLOBAL[global_iter];
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
             } else {
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
             }
         } else if (key == 'S') {
             mt_clrsrc();
@@ -431,9 +448,9 @@ int main() {
             global_iter += 10;
             instruction_counter += 10;
             accumulator = RAM_GLOBAL[global_iter];
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
             } else {
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
             }
         } else if (key == 'D') {
             mt_clrsrc();
@@ -442,16 +459,16 @@ int main() {
               global_iter += 1;
               instruction_counter += 1;
               accumulator = RAM_GLOBAL[global_iter];
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
             } else {
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
             }
         }
       } else if (scanf("%c%c", &key, &c) == EOF) {
           break;
           } else { 
           mt_clrsrc();
-          initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0);
+          initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
           key = 0;
           c = 0;
           fflush(NULL);
