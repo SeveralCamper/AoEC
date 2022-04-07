@@ -1,7 +1,7 @@
 #include "myBigChar.h"
 
 void signalhandler(int signo) {
-  printf("");
+  printf(" ");
 }
 
 int bc_printA (char * str) {
@@ -411,12 +411,20 @@ int main() {
 
             setitimer(ITIMER_REAL, &nval, &oval);
 
-            for (int i = 0; i < 100; i++) {
+            while (global_iter < 100 && global_iter > 0) {
               global_iter += 1;
               instruction_counter += 1;
               accumulator = RAM_GLOBAL[global_iter];
               initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
               pause();
+              if (global_iter >= 100 || global_iter <= 0) {
+                global_iter = 0;
+                instruction_counter = 0;
+                accumulator = RAM_GLOBAL[global_iter];
+                signal(SIGUSR1, signalhandler);
+                initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
+                continue;
+              }
             }
         
         } else if (key == 'A') {
