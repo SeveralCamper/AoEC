@@ -184,4 +184,10 @@ int sc_commandDecode(int value, int *command, int *operand) {
       printf("%d", RAM_GLOBAL[i]);
     }
   }
+
+  printf("\n\n\n");
+
+  sc_regSet(2,-1);
+  printf("\n\n\n");
+  sc_regSet(2,-0);
 } */
