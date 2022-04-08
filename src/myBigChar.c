@@ -8,11 +8,11 @@ void signalhandler(int signo) {
   }
 }
 
-int bc_printA (char * str) {
+int bc_printA(char * str) {
   int exit_flag = EXIT_SUCCESS;
 
-	printf("\E(0%s", str);
-	printf("\E(B");
+  printf("\E(0%s", str);
+  printf("\E(B");
 
   return exit_flag;
 }
@@ -20,7 +20,7 @@ int bc_printA (char * str) {
 int bc_box(int x1, int y1, int x2, int y2) {
   int exit_falg = EXIT_SUCCESS;
   mt_gotoXY(y1, x1);
-  for(int i = 0; i < x2 - x1; i++) {
+  for (int i = 0; i < x2 - x1; i++) {
     if (i == 0) {
       printf("\u250C");
     } else {
@@ -29,7 +29,7 @@ int bc_box(int x1, int y1, int x2, int y2) {
   }
   bc_printA("\u2510");
 
-  for(int i = 0; i < y2-y1; i++) {
+  for (int i = 0; i < y2-y1; i++) {
     mt_gotoXY(y1+i+1, x1);
     bc_printA("\u2502");
     mt_gotoXY(y1+i+1, x2);
@@ -38,7 +38,7 @@ int bc_box(int x1, int y1, int x2, int y2) {
 
   mt_gotoXY(y2+1, x1);
   bc_printA("\u2514");
-  for(int i = 0; i < x2 - x1 - 1; i++) {
+  for (int i = 0; i < x2 - x1 - 1; i++) {
     bc_printA("\u2500");
   }
   bc_printA("\u2518\n");
@@ -51,7 +51,7 @@ int bc_box(int x1, int y1, int x2, int y2) {
 
 void bc_bigcharLayout(int *A, int number) {
   number = number % 18;
-  switch(number) {
+  switch (number) {
     case 0:
       A[0] = 4291019715;
       A[1] = 3284386815;
@@ -92,37 +92,37 @@ void bc_bigcharLayout(int *A, int number) {
       A[0] = 4290822336;
       A[1] = 4291019775;
       break;
-    case 10: // A
+    case 10:  // A
       A[0] = 3284386755;
       A[1] = 4291019580;
       break;
-    case 11: // B
+    case 11:  // B
       A[0] = 1069794243;
       A[1] = 1069794111;
       break;
-    case 12: // C
+    case 12:  // C
       A[0] = 1019413251;
       A[1] = 50578236;
       break;
-    case 13: // D
-      A[0] = 1069794243;   // 
-      A[1] = 3284386623;   // 
+    case 13:  // D
+      A[0] = 1069794243;  //
+      A[1] = 3284386623;  //
       break;
-    case 14: // E
-      A[0] = 4278387459;   // 11000000110000001100000011111111
-      A[1] = 4278387711;   // 11111111110000001100000011111111
+    case 14:  // E
+      A[0] = 4278387459;  // 11000000110000001100000011111111
+      A[1] = 4278387711;  // 11111111110000001100000011111111
       break;
-    case 15: // F
-      A[0] = 50529027;     // 11000000110000001100000011000000
-      A[1] = 4278387711;   // 11111111110000001100000011111111
+    case 15:  // F
+      A[0] = 50529027;  // 11000000110000001100000011000000
+      A[1] = 4278387711;  // 11111111110000001100000011111111
       break;
-    case 16: // +
+    case 16:  // +
       A[0] = 6168;
       A[1] = 4279769088;
       break;
-    case 17: // -
-      A[0] = 0;     
-      A[1] = 4278190080;   
+    case 17:  // -
+      A[0] = 0;
+      A[1] = 4278190080;
     default:
       return;
     }
@@ -135,8 +135,8 @@ int bc_printbigchar(int *A, int x, int y, colors_t clolor, colors_back_t color_b
   mt_setbgcolor(clolor);
   mt_setfgcolor(color_back);
   int k = 1;
-  for(int i = 0; i < 8; i++) {
-    for(int j = 0; j < 8; j++) { 
+  for (int i = 0; i < 8; i++) {
+    for (int j = 0; j < 8; j++) {
       if (i == 4) {
         k = 0;
       }
@@ -177,7 +177,7 @@ int bc_setbigcharpos(int * big, int x, int y, int value) {
 
 int bc_getbigcharpos(int * big, int x, int y, int *value) {
   int exit_flag = EXIT_SUCCESS;
-  if(x < 1 || x > 8 || y < 1 || y > 8) {
+  if (x < 1 || x > 8 || y < 1 || y > 8) {
     exit_flag = EXIT_FAILURE;
   } else {
     *value = (big[y/5] >> ((y - 1) * 8 + x - 1)) & 0x1;
@@ -204,8 +204,8 @@ int bc_bigcharread(int fd, int * big, int need_count, int * count) {
 }
 
 void parse_el(int element, int current, int accum) {
- char sign = '+';
-  int num[4] = {0, 0, 0, 0}; 
+  char sign = '+';
+  int num[4] = {0, 0, 0, 0};
   int count = 3;
   if (element < 0) {
     sign = '-';
@@ -218,9 +218,9 @@ void parse_el(int element, int current, int accum) {
   }
 
   if (current == accum) {
-    printf("\e[30;44;1m%c%d%d%d%d\e[m ", sign,num[0],num[1],num[2],num[3]);
+    printf("\e[30;44;1m%c%d%d%d%d\e[m ", sign, num[0], num[1], num[2], num[3]);
   } else {
-    printf("%c%d%d%d%d ", sign,num[0],num[1],num[2],num[3]);
+    printf("%c%d%d%d%d ", sign, num[0], num[1], num[2], num[3]);
   }
 }
 
@@ -261,13 +261,13 @@ void print_info(int accumulator, int instruction_counter, char flag) {
   mt_gotoXY(5, 69);
   printf(" InstructionCounter ");
   mt_gotoXY(6, 76);
-  
+
   print_instruction_counter(instruction_counter);
 
   bc_box(64, 8, 93, 9);
   mt_gotoXY(8, 73);
   printf(" Operation ");
-  mt_gotoXY(9,78);
+  mt_gotoXY(9, 78);
   printf("%c", flag);
   bc_box(64, 11, 93, 12);
   mt_gotoXY(11, 75);
@@ -283,9 +283,10 @@ void print_info(int accumulator, int instruction_counter, char flag) {
   mt_gotoXY(25, 0);
 }
 
-void initialize_management_console(int *buf_array, int number, int accumulator, int instruction_counter, int lab, char flag) {
+void initialize_management_console(int *buf_array, int number, int accumulator,
+                                   int instruction_counter, int lab, char flag) {
   int str_pos = 0;
-  
+
   mt_clrsrc();
   mt_gotoXY(1, 37);
   printf(" MY SIMPLE COMPUTER ");
@@ -310,7 +311,7 @@ void initialize_management_console(int *buf_array, int number, int accumulator, 
       bc_printbigchar(buf_array, 15, (i * 10) + 2, WHITE, BLACK);
     }
   } else {
-    int num[4] = {0, 0, 0, 0}; 
+    int num[4] = {0, 0, 0, 0};
     int count = 3, sign = 16;
     if (number < 0) {
       sign = 17;
@@ -321,7 +322,6 @@ void initialize_management_console(int *buf_array, int number, int accumulator, 
         count--;
       }
     } else if (number == 0) {
-
     } else {
       while (number > 0) {
         num[count] = number % 10;
@@ -380,7 +380,6 @@ int main() {
           mt_clrsrc();
           break;
         } else if ((key == 'I')) {
-
             for (int i = RAM_SIZE; i > 0; i--) {
               RAM_GLOBAL[i] = i - 100;
             }
@@ -388,7 +387,8 @@ int main() {
             accumulator = 0;
 
             mt_clrsrc();
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
+            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
+                                          instruction_counter, 0, key);
         } else if ((key == 'i')) {
             global_iter = 0;
             accumulator = 0;
@@ -398,16 +398,17 @@ int main() {
             for (int i = 0; i < 100; i++) {
               RAM_GLOBAL[i] = 0;
             }
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
+            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
+                                          instruction_counter, 0, key);
         } else if (key == 't') {
-          
             mt_clrsrc();
-          
+
             global_iter += 1;
             instruction_counter += 1;
             accumulator = RAM_GLOBAL[global_iter];
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
-        } else if (key == 'r') { // SIGNALS
+            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
+                                          instruction_counter, 0, key);
+        } else if (key == 'r') {  // SIGNALS
             mt_clrsrc();
 
             signal(SIGALRM, signalhandler);
@@ -423,28 +424,31 @@ int main() {
               global_iter += 1;
               instruction_counter += 1;
               accumulator = RAM_GLOBAL[global_iter];
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
+                                            instruction_counter, 0, key);
               pause();
               if (global_iter >= 100 || global_iter <= 0) {
                 global_iter = 0;
                 instruction_counter = 0;
                 accumulator = RAM_GLOBAL[global_iter];
                 signal(SIGUSR1, signalhandler);
-                initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
+                initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
+                                              instruction_counter, 0, key);
                 continue;
               }
             }
-        
         } else if (key == 'A') {
             mt_clrsrc();
 
-            if ((global_iter % 10 - 1) != -1 ) {
+            if ((global_iter % 10 - 1) != -1) {
               global_iter -= 1;
               instruction_counter -= 1;
               accumulator = RAM_GLOBAL[global_iter];
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
+                                            instruction_counter, 0, key);
             } else {
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
+                                            instruction_counter, 0, key);
             }
         } else if (key == 'W') {
             mt_clrsrc();
@@ -453,20 +457,24 @@ int main() {
             global_iter -= 10;
             instruction_counter -= 10;
             accumulator = RAM_GLOBAL[global_iter];
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
+            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
+                                          instruction_counter, 0, key);
             } else {
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
+                                            instruction_counter, 0, key);
             }
         } else if (key == 'S') {
             mt_clrsrc();
-            
+
             if ((global_iter + 10) <= 100) {
             global_iter += 10;
             instruction_counter += 10;
             accumulator = RAM_GLOBAL[global_iter];
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
+            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
+                                          instruction_counter, 0, key);
             } else {
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
+                                            instruction_counter, 0, key);
             }
         } else if (key == 'D') {
             mt_clrsrc();
@@ -475,16 +483,19 @@ int main() {
               global_iter += 1;
               instruction_counter += 1;
               accumulator = RAM_GLOBAL[global_iter];
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
+                                            instruction_counter, 0, key);
             } else {
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
+              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
+                                            instruction_counter, 0, key);
             }
         }
       } else if (scanf("%c%c", &key, &c) == EOF) {
           break;
-          } else { 
+          } else {
           mt_clrsrc();
-          initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator, instruction_counter, 0, key);
+          initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
+                                        instruction_counter, 0, key);
           key = 0;
           c = 0;
           fflush(NULL);
