@@ -19,6 +19,7 @@ int g_large2lba (tLARGE, tLBA *);
 int g_idechs2chs (tIDECHS. tCHS *);
 int g_idechs2lagre (tIDECHS. tLARGE *);
 int g_idechs2lba (tIDECHS. tLBA *);
+
 int a_lba2chs (tCHS geometry, tLBA, tCHS *);
 int a_lba2large (tLARGE geometry, tLBA, tLARGE *);
 int a_lba2idechs (tIDECHS geometry, tLBA, tIDECHS *);

@@ -90,7 +90,9 @@ test: $(TESTTARGET1)
 
 clean:	
 		rm -rf *.txt
+		rm -rf *.out
 		rm -rf gcov_report
+		rm -rf RAMInterface
 		rm -rf mySimpleComputer
 		rm -rf mySimpleComputer.a
 		rm -rf ../../bin/mySimpleComputer
