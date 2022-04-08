@@ -247,6 +247,38 @@ void print_instruction_counter(int instr_count) {
   printf("0%d:0%d", i_el, j_el);
 }
 
+void print_info(int accumulator, int instruction_counter, char flag) {
+  bc_box(64, 2, 93, 3);
+  mt_gotoXY(2, 72);
+  printf(" Accumulator ");
+  mt_gotoXY(3, 76);
+  parse_el(accumulator, -2, -1);
+  bc_box(64, 5, 93, 6);
+  mt_gotoXY(5, 69);
+  printf(" InstructionCounter ");
+  mt_gotoXY(6, 76);
+  
+  print_instruction_counter(instruction_counter);
+
+  bc_box(64, 8, 93, 9);
+  mt_gotoXY(8, 73);
+  printf(" Operation ");
+  mt_gotoXY(9,78);
+  printf("%c", flag);
+  bc_box(64, 11, 93, 12);
+  mt_gotoXY(11, 75);
+  printf(" Flags ");
+
+  bc_box(51, 14, 93, 22);
+  mt_gotoXY(14, 69);
+  printf(" Keys ");
+  print_keys();
+
+  mt_gotoXY(24, 0);
+  printf("Input\\Output:");
+  mt_gotoXY(25, 0);
+}
+
 void initialize_management_console(int *buf_array, int number, int accumulator, int instruction_counter, int lab, char flag) {
   int str_pos = 0;
   
@@ -308,35 +340,7 @@ void initialize_management_console(int *buf_array, int number, int accumulator, 
     }
   }
 
-  bc_box(64, 2, 93, 3);
-  mt_gotoXY(2, 72);
-  printf(" Accumulator ");
-  mt_gotoXY(3, 76);
-  parse_el(accumulator, -2, -1);
-  bc_box(64, 5, 93, 6);
-  mt_gotoXY(5, 69);
-  printf(" InstructionCounter ");
-  mt_gotoXY(6, 76);
-  
-  print_instruction_counter(instruction_counter);
-
-  bc_box(64, 8, 93, 9);
-  mt_gotoXY(8, 73);
-  printf(" Operation ");
-  mt_gotoXY(9,78);
-  printf("%c", flag);
-  bc_box(64, 11, 93, 12);
-  mt_gotoXY(11, 75);
-  printf(" Flags ");
-
-  bc_box(51, 14, 93, 22);
-  mt_gotoXY(14, 69);
-  printf(" Keys ");
-  print_keys();
-
-  mt_gotoXY(24, 0);
-  printf("Input\\Output:");
-  mt_gotoXY(25, 0);
+  print_info(accumulator, instruction_counter, flag);
 }
 
 int main() {

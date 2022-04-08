@@ -54,7 +54,11 @@ int bc_getbigcharpos(int *big, int x, int y, int *value);
 int bc_bigcharread(int fd, int * big, int need_count, int *count);
 int bc_printbigchar(int* p, int x, int y, colors_t clolor, colors_back_t clolor_back);
 
-void initialize_management_console(int *buf_array, int number, int accumulator, int instruction_counter, int lab, char flag);
+void print_keys();
+void signalhandler(int signo);
 void bc_bigcharLayout(int*, int);
+void parse_el(int element, int current, int accum);
+void print_info(int accumulator, int instruction_counter, char flag);
+void initialize_management_console(int *buf_array, int number, int accumulator, int instruction_counter, int lab, char flag);
 
 #endif  //  MY_BIG_CHAR_H_
