@@ -1,8 +1,10 @@
 CC = gcc -std=c11
 CFLAGS = -Wall -Werror -Wextra
 LIBS = -lcheck -lsubunit -lrt -lpthread -lm
-TARGET = ../../bin/mySimpleComputer
-TESTTARGET = ../../bin/mySimpleComputerTest
+TARGET1 = ../bin/mySimpleComputer
+TARGET2 = ../bin/myTerm
+TARGET3 = ../bin/myBigChar
+TESTTARGET1 = ../../bin/mySimpleComputerTest
 OS := $(shell uname -s)
 
 ifeq ($(OS), Linux)
@@ -19,21 +21,49 @@ endif
 PATH := $(PATH):$(BREW)/bin
 GCOV = --coverage
 
-all: clean mySimpleComputer.a
+all: clean myBigChar.a
 
-$(TARGET): mySimpleComputer.o mySimpleComputer.a
+$(TARGET1): mySimpleComputer.o mySimpleComputer.a
 	$(CC) mySimpleComputer.o $(CFLAGS) $(LIBS) $(GCOV) -L. mySimpleComputer.a -o $@
+
+$(TARGET2): mySimpleComputer.o myTerm.o myTerm.a
+	$(CC) mySimpleComputer.o myTerm.o $(CFLAGS) $(LIBS) $(GCOV) -L. myTerm.a -o $@
+
+$(TARGET3): mySimpleComputer.o myTerm.o myBigChar.o myBigChar.a
+	$(CC) mySimpleComputer.o myTerm.o myBigChar.o $(CFLAGS) $(LIBS) $(GCOV) -L. myBigChar.a -o $@
 
 mySimpleComputer.o: mySimpleComputer.c
 	$(CC) -c mySimpleComputer.c $(CFLAGS) $(LIBS) -o $@
+
+myTerm.o: myTerm.c
+	$(CC) -c myTerm.c $(CFLAGS) $(LIBS) -o $@
+
+myBigChar.o: myBigChar.c
+	$(CC) -c myBigChar.c $(CFLAGS) $(LIBS) -o $@
 
 mySimpleComputer.a: mySimpleComputer.o
 	ar rcs $@ $^
 	ranlib $@
 	cp $@ lib$@
 
-run: $(TARGET)
-	../.././bin/mySimpleComputer
+myTerm.a: myTerm.o
+	ar rcs $@ $^
+	ranlib $@
+	cp $@ lib$@
+
+myBigChar.a: myBigChar.o
+	ar rcs $@ $^
+	ranlib $@
+	cp $@ lib$@
+
+run1: $(TARGET1)
+	.././bin/mySimpleComputer
+
+run2: $(TARGET2)
+	.././bin/myTerm
+
+run3: $(TARGET3)
+	.././bin/myBigChar
 
 gcov_report: clean test/mySimpleComputerTest.c mySimpleComputer.c
 	-mkdir report
@@ -47,7 +77,7 @@ gcov_report: clean test/mySimpleComputerTest.c mySimpleComputer.c
 	genhtml -o report test/mySimpleComputerTest.info
 	$(OPEN) ./report/index.html
 
-$(TESTTARGET): mySimpleComputer.a test/mySimpleComputerTest.o mySimpleComputer.o
+$(TESTTARGET1): mySimpleComputer.a test/mySimpleComputerTest.o mySimpleComputer.o
 	$(CC) test/mySimpleComputerTest.c mySimpleComputer.o $(CFLAGS) $(LIBS) -o $@
 	
 
@@ -55,8 +85,8 @@ test/mySimpleComputerTest.o: test/mySimpleComputerTest.c mySimpleComputer.h
 	$(CC) $(CFLAGS) $(LIBS) -c test/mySimpleComputerTest.c -o $@ 
 	$(CC) $(CFLAGS) $(LIBS) -c mySimpleComputer.c -o $@
 
-test: $(TESTTARGET)
-	./$(TESTTARGET)
+test: $(TESTTARGET1)
+	./$(TESTTARGET1)
 
 clean:	
 		rm -rf *.txt

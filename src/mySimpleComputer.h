@@ -8,10 +8,10 @@
 #define RAM_SIZE 100
 
 // Flags
-#define  NORMAL_VALUE 0
-#define  OVERFLOW 1
-#define  MEMORY_ERROR 2
-#define  INVALID_COMMAND 3
+#define NORMAL_VALUE 0
+#define OVERFLOW 1
+#define MEMORY_ERROR 2
+#define INVALID_COMMAND 3
 
 // Commands
 #define READ 10

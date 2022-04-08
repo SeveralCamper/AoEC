@@ -1,7 +1,11 @@
 #include "myBigChar.h"
 
 void signalhandler(int signo) {
-  printf(" ");
+  if (signo) {
+    printf(" ");
+  } else {
+    printf(" ");
+  }
 }
 
 int bc_printA (char * str) {
