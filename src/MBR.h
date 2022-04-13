@@ -7,7 +7,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int g_lba2chs(tLBA, tCHS *);
+typedef struct CHS {
+    unsigned short cyl; 
+    unsigned short head; 
+    unsigned short sec; 
+} tCHS;
+
+typedef struct ECHS {
+    unsigned short cyl; 
+    unsigned short head; 
+    unsigned short sec; 
+} tLARGE;
+
+typedef struct IDECHS {
+    unsigned short cyl; 
+    unsigned short head; 
+    unsigned short sec; 
+} tIDECHS;
+
+typedef struct LBA {
+    unsigned int lba; 
+} tLBA;
+
+typedef struct PART {
+    int activ;
+    tCHS beg;
+    tCHS end;
+    tLBA lba_beg;
+    int size;
+} tPART;
+
+int g_lba2chs(tLBA orig, tCHS *dest);
 int g_lba2large(tLBA, tLARGE *);
 int g_lba2idechs(tLBA, tIDECHS *);
 int g_chs2large(tCHS, tLARGE *);
