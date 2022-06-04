@@ -2,7 +2,7 @@
 
 void signalhandler(int signo) {
   if (signo) {
-    printf("Cработал таймер!");
+    printf(" ");
   } else {
     printf(" ");
   }
@@ -427,19 +427,19 @@ int main() {
               initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
                                             instruction_counter, 0, key);
               pause();
-              if (global_iter > 100 || global_iter < 0) {
+              if (global_iter != 100) {
+                initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
+                            instruction_counter, 0, key);
+                continue;
+              } else {
                 global_iter = 0;
                 instruction_counter = 0;
                 accumulator = RAM_GLOBAL[global_iter];
                 signal(SIGUSR1, signalhandler);
                 initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
-                                              instruction_counter, 0, key);
-                continue;
-              } else {
-                initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
-                              instruction_counter, 0, key);
-                continue;
-              }
+                                instruction_counter, 0, key);
+                break;
+              }              
             }
         } else if (key == 'A') {
             mt_clrsrc();
