@@ -1,5 +1,5 @@
-#ifndef MY_BIG_CHAR_H_
-#define MY_BIG_CHAR_H_
+#ifndef SRC_MY_BIG_CHAR_H_
+#define SRC_MY_BIG_CHAR_H_
 
 #include <unistd.h>
 #include <stdio.h>
@@ -59,6 +59,7 @@ void signalhandler(int signo);
 void bc_bigcharLayout(int*, int);
 void parse_el(int element, int current, int accum);
 void print_info(int accumulator, int instruction_counter, char flag);
-void initialize_management_console(int *buf_array, int number, int accumulator, int instruction_counter, int lab, char flag);
+void initialize_management_console(int *buf_array, int number, int accumulator, 
+                                   int instruction_counter, int lab, char flag);
 
-#endif  //  MY_BIG_CHAR_H_
+#endif  //  SRC_MY_BIG_CHAR_H_

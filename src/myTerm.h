@@ -1,5 +1,5 @@
-#ifndef MY_TERM_H_
-#define MY_TERM_H_
+#ifndef SRC_MY_TERM_H_
+#define SRC_MY_TERM_H_
 
 #include "mySimpleComputer.h"
 
@@ -59,9 +59,9 @@ typedef enum {
 } colors_back_t;
 
 int mt_clrsrc(void);
-int mt_gotoXY (int x, int y);
-int mt_setfgcolor (colors_t color);
-int mt_setbgcolor (colors_back_t color_back);
-int mt_getscreensize (int * rows, int * cols);
+int mt_gotoXY(int x, int y);
+int mt_setfgcolor(colors_t color);
+int mt_setbgcolor(colors_back_t color_back);
+int mt_getscreensize(int * rows, int * cols);
 
-#endif  //  MY_TERM_H_
+#endif  //  SRC_MY_TERM_H_

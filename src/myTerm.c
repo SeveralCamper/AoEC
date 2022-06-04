@@ -6,27 +6,27 @@ int mt_clrsrc(void) {
     return EXIT_SUCCESS;
 }
 
-int mt_gotoXY (int x, int y) {
+int mt_gotoXY(int x, int y) {
     printf("\033[%d;%dH", x, y);
 
     return EXIT_SUCCESS;
 }
 
-int mt_setfgcolor (colors_t color) {
+int mt_setfgcolor(colors_t color) {
     printf("\e[%dm", color);
 
     return EXIT_SUCCESS;
 }
 
-int mt_setbgcolor (colors_back_t color_back) {
+int mt_setbgcolor(colors_back_t color_back) {
     printf("\e[%dm", color_back);
 
     return EXIT_SUCCESS;
 }
 
-int mt_getscreensize (int * rows, int * cols) {
+int mt_getscreensize(int * rows, int * cols) {
     printf("getsize -s %d %d", *rows, *cols);
-    
+
     return EXIT_SUCCESS;
 }
 

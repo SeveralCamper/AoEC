@@ -1,14 +1,13 @@
 #include "mySimpleComputer.h"
 
-int sc_memoryInit () {
+int sc_memoryInit() {
   for (int i = 0; i < RAM_SIZE; i++) {
-    RAM_GLOBAL[i] = 0; 
+    RAM_GLOBAL[i] = 0;
   }
-
   return EXIT_SUCCESS;
 }
 
-int sc_memorySet (int address, int value) {
+int sc_memorySet(int address, int value) {
   int exit_flag = EXIT_SUCCESS;
   if (0 <= address && address < RAM_SIZE) {
     RAM_GLOBAL[address] = value;
@@ -19,7 +18,7 @@ int sc_memorySet (int address, int value) {
   return exit_flag;
 }
 
-int sc_memoryGet (int address, int * value) {
+int sc_memoryGet(int address, int * value) {
   int exit_flag = EXIT_SUCCESS;
   if (0 <= address && address < RAM_SIZE) {
     *value = RAM_GLOBAL[address];
@@ -27,7 +26,7 @@ int sc_memoryGet (int address, int * value) {
     exit_flag = EXIT_FAILURE;
   }
 
-  return exit_flag;  
+  return exit_flag;
 }
 
 int sc_memorySave(char *filename) {
@@ -55,7 +54,7 @@ int sc_memoryLoad(char *filename) {
   return exit_flag;
 }
 
-int sc_memoryInit_S (RAM_Simple_Computer *RAM) {
+int sc_memoryInit_S(RAM_Simple_Computer *RAM) {
   int exit_flag = EXIT_SUCCESS;
   RAM->RAM_array = (int*) malloc(RAM_SIZE * sizeof(int));
 
@@ -73,7 +72,7 @@ int sc_memoryInit_S (RAM_Simple_Computer *RAM) {
   return exit_flag;
 }
 
-int sc_regInit (void) {
+int sc_regInit(void) {
   int exit_flag = EXIT_SUCCESS;
 
   flag_register = 0;
@@ -81,9 +80,9 @@ int sc_regInit (void) {
   return exit_flag;
 }
 
-int sc_regSet (int register_n, int value) {
+int sc_regSet(int register_n, int value) {
   int exit_flag = EXIT_SUCCESS;
-  
+
   if (register_n < NORMAL_VALUE_S || register_n > INVALID_COMMAND) {
     exit_flag = EXIT_FAILURE;
   } else {
@@ -97,7 +96,7 @@ int sc_regSet (int register_n, int value) {
   return exit_flag;
 }
 
-int sc_regGet (int register_n, int * value) {
+int sc_regGet(int register_n, int * value) {
   int exit_flag = EXIT_SUCCESS;
 
   if (register_n < NORMAL_VALUE_S || register_n > INVALID_COMMAND) {
