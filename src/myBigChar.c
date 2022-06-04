@@ -2,7 +2,7 @@
 
 void signalhandler(int signo) {
   if (signo) {
-    printf(" ");
+    printf("Cработал таймер!");
   } else {
     printf(" ");
   }
@@ -413,8 +413,8 @@ int main() {
 
             signal(SIGALRM, signalhandler);
 
-            nval.it_interval.tv_sec = 2;
-            nval.it_interval.tv_usec = 500;
+            nval.it_interval.tv_sec = 1;
+            nval.it_interval.tv_usec = 100;
             nval.it_value.tv_sec = 1;
             nval.it_value.tv_usec = 0;
 
@@ -427,13 +427,17 @@ int main() {
               initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
                                             instruction_counter, 0, key);
               pause();
-              if (global_iter >= 100 || global_iter <= 0) {
+              if (global_iter > 100 || global_iter < 0) {
                 global_iter = 0;
                 instruction_counter = 0;
                 accumulator = RAM_GLOBAL[global_iter];
                 signal(SIGUSR1, signalhandler);
                 initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
                                               instruction_counter, 0, key);
+                continue;
+              } else {
+                initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
+                              instruction_counter, 0, key);
                 continue;
               }
             }
