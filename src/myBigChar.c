@@ -49,8 +49,8 @@ int bc_box(int x1, int y1, int x2, int y2) {
   return exit_falg;
 }
 
-void bc_bigcharLayout(int *A, int number) {
-  number = number % 18;
+void bc_bigcharLayout(long long *A, int number) {
+  number = number % 21;
   switch (number) {
     case 0:
       A[0] = 4291019715;
@@ -105,16 +105,16 @@ void bc_bigcharLayout(int *A, int number) {
       A[1] = 50578236;
       break;
     case 13:  // D
-      A[0] = 1069794243;  //
-      A[1] = 3284386623;  //
+      A[0] = 1069794243;
+      A[1] = 3284386623;
       break;
     case 14:  // E
-      A[0] = 4278387459;  // 11000000110000001100000011111111
-      A[1] = 4278387711;  // 11111111110000001100000011111111
+      A[0] = 4278387459;
+      A[1] = 4278387711;
       break;
     case 15:  // F
-      A[0] = 50529027;  // 11000000110000001100000011000000
-      A[1] = 4278387711;  // 11111111110000001100000011111111
+      A[0] = 50529027;
+      A[1] = 4278387711;
       break;
     case 16:  // +
       A[0] = 6168;
@@ -123,12 +123,25 @@ void bc_bigcharLayout(int *A, int number) {
     case 17:  // -
       A[0] = 0;
       A[1] = 4278190080;
+      break;
+    case 18: // T - Андрей           Бин. представление:
+      A[0] = 404232216; //           00011000000110000001100000011000
+      A[1] = 404232447; //           00011000000110000001100011111111
+      break;
+    case 19: // L - тоже Андрей
+      A[0] = 4278387459; //          11111111000000110000001100000011 
+      A[1] = 50529027; //            00000011000000110000001100000011
+      break;
+    case 20: // сердечко - Настя
+      A[0] = 405029505; //           00011000001001000100001010000001
+      A[1] = 2172754278; //          10000001100000011001100101100110
+      break;  
     default:
       return;
     }
 }
 
-int bc_printbigchar(int *A, int x, int y, colors_t clolor, colors_back_t color_back) {
+int bc_printbigchar(long long *A, int x, int y, colors_t clolor, colors_back_t color_back) {
   int exit_flag = EXIT_SUCCESS;
 
   mt_gotoXY(x, y);
@@ -225,22 +238,7 @@ void parse_el(int element, int current, int accum) {
 }
 
 void print_keys() {
-  mt_gotoXY(15, 53);
-  printf("l - load     C - show 3-rd lab");
-  mt_gotoXY(16, 53);
-  printf("s - save     I - go to memory interface");
-  mt_gotoXY(17, 53);
-  printf("r - run      Q - quit");
-  mt_gotoXY(18, 53);
-  printf("t - step");
-  mt_gotoXY(19, 53);
-  printf("i - reset");
-  mt_gotoXY(20, 53);
-  printf("F5 - accumulator");
-  mt_gotoXY(21, 53);
-  printf("F6 - instruction counter");
-  mt_gotoXY(12, 75);
-  printf("O E V M");
+
 }
 
 void print_instruction_counter(int instr_count) {
@@ -283,7 +281,7 @@ void print_info(int accumulator, int instruction_counter, char flag) {
   mt_gotoXY(25, 0);
 }
 
-void initialize_management_console(int *buf_array, int number, int accumulator,
+void initialize_management_console(long long *buf_array, int number, int accumulator,
                                    int instruction_counter, int lab, char flag) {
   int str_pos = 0;
 
@@ -349,14 +347,10 @@ void initialize_management_console(int *buf_array, int number, int accumulator,
 
 int main() {
   char string1[15] = "file1.txt";
-  int *buf_array, number = 0, accumulator = RAM_GLOBAL[0], instruction_counter = 0, global_iter = 0;
-  buf_array = (int*) malloc(2 * sizeof(int));
+  long long *buf_array, number = 0, accumulator = RAM_GLOBAL[0], instruction_counter = 0, global_iter = 0;
+  buf_array = (long long*) malloc(2 * sizeof(int));
 
   initialize_management_console(buf_array, number, accumulator, instruction_counter, 1, '0');
-
-  for (int i = 0; i < RAM_SIZE; i++) {
-    RAM_GLOBAL[i] = i + 1;
-  }
 
   char key, c;
     while (key != 'Q') {
@@ -369,130 +363,15 @@ int main() {
         } else if (key == 's') {
           sc_memorySave(string1);
         } else if (key == 'C') {
-            if (number < 17) {
+            if (number < 20) {
               number++;
             } else {
               number = 0;
             }
-
             initialize_management_console(buf_array, number, accumulator, instruction_counter, 1, key);
         } else if (key == 'Q') {
           mt_clrsrc();
           break;
-        } else if ((key == 'I')) {
-            for (int i = RAM_SIZE; i > 0; i--) {
-              RAM_GLOBAL[i] = i - 100;
-            }
-
-            accumulator = 0;
-
-            mt_clrsrc();
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
-                                          instruction_counter, 0, key);
-        } else if ((key == 'i')) {
-            global_iter = 0;
-            accumulator = 0;
-            instruction_counter = 0;
-
-            mt_clrsrc();
-            for (int i = 0; i < 100; i++) {
-              RAM_GLOBAL[i] = 0;
-            }
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
-                                          instruction_counter, 0, key);
-        } else if (key == 't') {
-            mt_clrsrc();
-
-            global_iter += 1;
-            instruction_counter += 1;
-            accumulator = RAM_GLOBAL[global_iter];
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
-                                          instruction_counter, 0, key);
-        } else if (key == 'r') {  // SIGNALS
-            mt_clrsrc();
-
-            signal(SIGALRM, signalhandler);
-
-            nval.it_interval.tv_sec = 1;
-            nval.it_interval.tv_usec = 100;
-            nval.it_value.tv_sec = 1;
-            nval.it_value.tv_usec = 0;
-
-            setitimer(ITIMER_REAL, &nval, &oval);
-
-            while (global_iter < 100 && global_iter >= 0) {
-              global_iter += 1;
-              instruction_counter += 1;
-              accumulator = RAM_GLOBAL[global_iter];
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
-                                            instruction_counter, 0, key);
-              pause();
-              if (global_iter != 100) {
-                initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
-                            instruction_counter, 0, key);
-                continue;
-              } else {
-                global_iter = 0;
-                instruction_counter = 0;
-                accumulator = RAM_GLOBAL[global_iter];
-                signal(SIGUSR1, signalhandler);
-                initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
-                                instruction_counter, 0, key);
-                break;
-              }              
-            }
-        } else if (key == 'A') {
-            mt_clrsrc();
-
-            if ((global_iter % 10 - 1) != -1) {
-              global_iter -= 1;
-              instruction_counter -= 1;
-              accumulator = RAM_GLOBAL[global_iter];
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
-                                            instruction_counter, 0, key);
-            } else {
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
-                                            instruction_counter, 0, key);
-            }
-        } else if (key == 'W') {
-            mt_clrsrc();
-
-            if ((global_iter - 10) >= 0) {
-            global_iter -= 10;
-            instruction_counter -= 10;
-            accumulator = RAM_GLOBAL[global_iter];
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
-                                          instruction_counter, 0, key);
-            } else {
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
-                                            instruction_counter, 0, key);
-            }
-        } else if (key == 'S') {
-            mt_clrsrc();
-
-            if ((global_iter + 10) <= 100) {
-            global_iter += 10;
-            instruction_counter += 10;
-            accumulator = RAM_GLOBAL[global_iter];
-            initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
-                                          instruction_counter, 0, key);
-            } else {
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
-                                            instruction_counter, 0, key);
-            }
-        } else if (key == 'D') {
-            mt_clrsrc();
-
-            if ((global_iter % 10 + 1) != 10) {
-              global_iter += 1;
-              instruction_counter += 1;
-              accumulator = RAM_GLOBAL[global_iter];
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
-                                            instruction_counter, 0, key);
-            } else {
-              initialize_management_console(buf_array, RAM_GLOBAL[global_iter], accumulator,
-                                            instruction_counter, 0, key);
-            }
         }
       } else if (scanf("%c%c", &key, &c) == EOF) {
           break;

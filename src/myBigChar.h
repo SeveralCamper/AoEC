@@ -52,14 +52,14 @@ int bc_bigcharwrite(int fd, int * big, int count);
 int bc_setbigcharpos(int *big, int x, int y, int value);
 int bc_getbigcharpos(int *big, int x, int y, int *value);
 int bc_bigcharread(int fd, int * big, int need_count, int *count);
-int bc_printbigchar(int* p, int x, int y, colors_t clolor, colors_back_t clolor_back);
+int bc_printbigchar(long long* p, int x, int y, colors_t clolor, colors_back_t clolor_back);
 
 void print_keys();
 void signalhandler(int signo);
-void bc_bigcharLayout(int*, int);
+void bc_bigcharLayout(long long* Array, int number);
 void parse_el(int element, int current, int accum);
 void print_info(int accumulator, int instruction_counter, char flag);
-void initialize_management_console(int *buf_array, int number, int accumulator, 
+void initialize_management_console(long long *buf_array, int number, int accumulator, 
                                    int instruction_counter, int lab, char flag);
 
 #endif  //  SRC_MY_BIG_CHAR_H_
