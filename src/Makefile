@@ -2,8 +2,6 @@ CC = gcc -std=c11
 CFLAGS = -Wall -Werror -Wextra
 LIBS = -lcheck -lsubunit -lrt -lpthread -lm
 TARGET1 = ../bin/mySimpleComputer
-TARGET2 = ../bin/myTerm
-TARGET3 = ../bin/myBigChar
 TESTTARGET1 = ../../bin/mySimpleComputerTest
 OS := $(shell uname -s)
 
@@ -23,13 +21,7 @@ GCOV = --coverage
 
 all: clean myBigChar.a
 
-$(TARGET1): mySimpleComputer.o mySimpleComputer.a
-	$(CC) mySimpleComputer.o $(CFLAGS) $(LIBS) $(GCOV) -L. mySimpleComputer.a -o $@
-
-$(TARGET2): mySimpleComputer.o myTerm.o myTerm.a
-	$(CC) mySimpleComputer.o myTerm.o $(CFLAGS) $(LIBS) $(GCOV) -L. myTerm.a -o $@
-
-$(TARGET3): mySimpleComputer.o myTerm.o myBigChar.o myBigChar.a
+$(TARGET1): mySimpleComputer.o myTerm.o myBigChar.o myBigChar.a
 	$(CC) mySimpleComputer.o myTerm.o myBigChar.o $(CFLAGS) $(LIBS) $(GCOV) -L. myBigChar.a -o $@
 
 mySimpleComputer.o: mySimpleComputer.c
@@ -56,14 +48,8 @@ myBigChar.a: myBigChar.o
 	ranlib $@
 	cp $@ lib$@
 
-run1: $(TARGET1)
-	.././bin/mySimpleComputer
-
-run2: $(TARGET2)
-	.././bin/myTerm
-
-run3: $(TARGET3)
-	.././bin/myBigChar
+run: $(TARGET1)
+	./runRAMInterfaceWithSigno.sh
 
 gcov_report: clean test/mySimpleComputerTest.c mySimpleComputer.c
 	-mkdir report

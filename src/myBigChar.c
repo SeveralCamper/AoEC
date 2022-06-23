@@ -420,7 +420,7 @@ int main() {
 
             setitimer(ITIMER_REAL, &nval, &oval);
 
-            while (global_iter < 100 && global_iter > 0) {
+            while (global_iter < 100 && global_iter >= 0) {
               global_iter += 1;
               instruction_counter += 1;
               accumulator = RAM_GLOBAL[global_iter];
